@@ -4,7 +4,7 @@
  * All rights reserved. No warranty, explicit or implicit, provided.
  * 
  * Title: Theia Sticky Sidebar
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Liviu Cristian Mirea Ghiban
  * Email: contact@liviucmg.com
  * Website: http://liviucmg.com
