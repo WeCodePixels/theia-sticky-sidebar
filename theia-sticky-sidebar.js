@@ -4,7 +4,7 @@
  * All rights reserved. No warranty, explicit or implicit, provided.
  * 
  * Title: Theia Sticky Sidebar
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: Liviu Cristian Mirea Ghiban
  * Email: contact@liviucmg.com
  * Website: http://liviucmg.com
@@ -45,11 +45,16 @@
 			// Create sticky sidebar
 			o.sidebar.find('script').remove(); // Remove <script> tags, otherwise they will be run again on the next line.
 			o.sidebar.parents().css('-webkit-transform', 'none'); // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
+			o.sidebar.css({ // The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
+				'-webkit-box-sizing': 'border-box',
+				'-moz-box-sizing': 'border-box',
+				'box-sizing': 'border-box'
+			});
 			o.stickySidebar = $('<div>').addClass('theiaStickySidebar').append(o.sidebar.children());
 			o.sidebar.append(o.stickySidebar);
 
 			// Add a 1px top and bottom padding to disable margin collapse. Otherwise, the sidebar's height will change when setting "position: fixed".
-			o.stickySidebar.css('padding', '1px 0');
+//			o.stickySidebar.css('padding', '1px 0');
 
 			// Get existing top and bottom margins and paddings
 			o.marginTop = parseInt(o.sidebar.css('margin-top'));
@@ -95,10 +100,10 @@
 				if (fixed) {
 					var containerTop = o.container.offset().top;
 					var containerBottom = o.container.offset().top + getClearedHeight(o.container);
-					var fixedLimitTop = Math.max(0, containerTop - scrollTop) + o.paddingTop + o.marginTop + options.additionalMarginTop;
+					var fixedLimitTop = o.paddingTop + o.marginTop + options.additionalMarginTop;
 					var fixedLimitBottom = $(window).height() - o.marginBottom - o.paddingBottom - options.additionalMarginBottom;
-					var staticLimitTop = containerTop - scrollTop - o.marginTop - o.paddingTop  + options.additionalMarginTop;
-					var staticLimitBottom = containerBottom - scrollTop - o.paddingBottom - options.additionalMarginBottom;
+					var staticLimitTop = containerTop - scrollTop - o.marginTop - o.paddingTop + options.additionalMarginTop;
+					var staticLimitBottom = containerBottom - scrollTop - o.marginBottom - o.paddingBottom - options.additionalMarginBottom;
 
 					if (sidebarSmallerThanWindow) {
 						fixedLimitBottom = fixedLimitTop + o.stickySidebar.height();
@@ -109,18 +114,27 @@
 					top += scrollTopDiff;
 
 					if (scrollTopDiff > 0) {
+						// User is scrolling up.
 						top = Math.min(top, fixedLimitTop);
 					}
 					else {
+						// User is scrolling down.
 						top = Math.max(top, fixedLimitBottom - o.stickySidebar.height());
 					}
 
 					top = Math.max(top, staticLimitTop);
+
 					top = Math.min(top, staticLimitBottom - o.stickySidebar.height());
 
+					if (top <= staticLimitTop + 2 * o.paddingTop + 2 * o.marginTop - options.additionalMarginTop) {
+						fixed = false;
+					}
+				}
+
+				if (fixed) {
 					if (o.options.updateSidebarHeight == false) {
 						o.sidebar.css({
-							'min-height': o.sidebar.height()
+							'min-height': o.sidebar.outerHeight()
 						});
 					}
 
