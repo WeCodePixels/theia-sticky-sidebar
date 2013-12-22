@@ -4,7 +4,7 @@
  * All rights reserved. No warranty, explicit or implicit, provided.
  * 
  * Title: Theia Sticky Sidebar
- * Version: 1.1.2
+ * Version: 1.1.3
  * Author: Liviu Cristian Mirea Ghiban
  * Email: contact@liviucmg.com
  * Website: http://liviucmg.com
@@ -179,14 +179,15 @@
 			// Reset the sidebar to its default state
 			function resetSidebar() {
 				o.fixedScrollTop = 0;
-				o.sidebar.css({
-					'min-height': '0'
+				setCssIfDifferent(o.sidebar, {
+					'min-height': '0px'
 				});
-				o.stickySidebar.css({
-					'position': 'static',
-					'width': ''
+				setCssIfDifferent(o.stickySidebar, {
+					'position': 'static'
 				});
-				o.stickySidebar.removeClass('theiaStickySidebar-fixed');
+				if (o.stickySidebar.hasClass('theiaStickySidebar-fixed')) {
+					o.stickySidebar.removeClass('theiaStickySidebar-fixed');
+				}
 			}
 
 			// Get the height of a div as if its floated children were cleared. Note that this function fails if the floats are more than one level deep.
@@ -198,6 +199,15 @@
 				});
 
 				return height;
+			}
+
+			// Sets CSS properties only if they're not already present.
+			function setCssIfDifferent(object, css) {
+				for (var i in css) {
+					if (object.css(i) != css[i]) {
+						object.css(i, css[i]);
+					}
+				}
 			}
 		});
 	}
