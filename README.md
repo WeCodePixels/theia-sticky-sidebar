@@ -20,6 +20,29 @@ bower install theia-sticky-sidebar
 
 ## Usage
 
+Your website's HTML structure has to be similar to this in order to work:
+
+```html
+<div class="wrapper">
+  <div class="content">
+    <div class="theiaStickySidebar">
+    ...
+    </div>
+  </div>
+  <div class="sidebar">
+    <div class="theiaStickySidebar">
+    ...
+    </div>
+  </div>
+</div>
+```
+
+Note that the inner "theiaStickySidebar" divs are optional, but highly recommended.
+If you don't supply them yourself, the script will create them for you, but this can be problematic
+if you're using ads or iframes, since they will be moved around in the DOM and as a result will get reloaded.
+
+For the above example, you can use the following JavaScript:
+
 ```html
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript" src="theia-sticky-sidebar.js"></script>
