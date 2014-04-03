@@ -14,7 +14,7 @@ bower install theia-sticky-sidebar
 
 ## Usage
 
-```javascript
+```html
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 <script type="text/javascript" src="theia-sticky-sidebar.js"></script>
 		
@@ -22,7 +22,7 @@ bower install theia-sticky-sidebar
   jQuery(document).ready(function() {
     jQuery('.content, .sidebar').theiaStickySidebar({
 	  // Settings
-      additionalMarginTop': 30
+      additionalMarginTop: 30
     });
   });
 </script>
@@ -44,7 +44,7 @@ An additional bottom margin in pixels. Defaults to **0**.
 
 ### updateSidebarHeight
 
-Defaults to **true**.
+Updates the sidebar's height. Use this if the background isn't showing properly, for example. Defaults to **true**.
 
 ### minWidth
 
