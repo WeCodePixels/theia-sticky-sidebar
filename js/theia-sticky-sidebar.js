@@ -1,6 +1,6 @@
 /*!
  * Theia Sticky Sidebar v1.2.0
- * Glues your website's sidebars, making them permanently visible.
+ * Glues your website's sidebars, making them permanently visible when scrolling.
  * MIT License
  * by Liviu Cristian Mirea Ghiban - http://liviucmg.com
  */

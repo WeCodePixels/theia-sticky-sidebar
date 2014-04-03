@@ -1,6 +1,6 @@
 # Theia Sticky Sidebar
 
-Glues your website's sidebars, making them permanently visible.
+Glues your website's sidebars, making them permanently visible when scrolling.
 
 ## Install
 
