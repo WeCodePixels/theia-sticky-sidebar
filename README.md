@@ -1,5 +1,7 @@
 # Theia Sticky Sidebar
 
+![Theia Sticky Sidebar logo](https://raw.githubusercontent.com/liviucmg/theia-sticky-sidebar/master/assets/logo.png "Theia Sticky Sidebar logo")
+
 Glues your website's sidebars, making them permanently visible when scrolling.
 
 Check out these examples:
