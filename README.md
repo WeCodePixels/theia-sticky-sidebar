@@ -2,7 +2,7 @@
 
 ![Theia Sticky Sidebar logo](https://raw.githubusercontent.com/liviucmg/theia-sticky-sidebar/master/assets/logo.png "Theia Sticky Sidebar logo")
 
-Glues your website's sidebars, making them permanently visible when scrolling.
+Glues your website's sidebars (or any vertical column for that matter), making them permanently visible when scrolling up and down. Useful when a sidebar is too tall or too short compared to the rest of the content. Works with virtually any design and supports multiple sidebars.
 
 Check out these examples:
 
