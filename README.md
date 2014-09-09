@@ -10,6 +10,8 @@ Check out these examples:
 
 [4 columns example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/4-columns.html)
 
+[Foundation example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/foundation.html)
+
 ## Install
 
 ### Bower
