@@ -4,6 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
 		<script type="text/javascript" src="../js/theia-sticky-sidebar.js"></script>
+        <script type="text/javascript" src="../js/test.js"></script>
 		<style>
 			.innerWrapper {
 				margin: 0 -15px;
@@ -14,11 +15,17 @@
 				padding: 0 15px;
 				float: left;
 			}
+            
+            button {
+                margin: 0 0 30px 0;
+            }
 		</style>
 	</head>
 	<body>
 		<div class="header">
 			<h1>Theia Sticky Sidebar - 4 columns example</h1>
+            
+            <button onclick="this.disabled = true; testTheiaStickySidebars();">Run the self-assessment test</button> (May take a while. Be sure to not scroll or resize the window.)
 		</div>
 		
 		<div class="wrapper">
