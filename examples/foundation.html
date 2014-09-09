@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <link href="http://cdn.foundation5.zurb.com/foundation.css" rel="stylesheet">
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script type="text/javascript" src="../js/theia-sticky-sidebar.js"></script>
+        <script type="text/javascript" src="../js/test.js"></script>
+        <style>
+            header, footer {
+                margin: 20px 0;
+            }
+
+            .columns > div {
+                background: linear-gradient(
+                        135deg,
+                        rgba(109,179,242,1) 0,
+                        rgba(84,163,238,1) 50%,
+                        rgba(54,144,240,1) 50%,
+                        rgba(30,105,222,1) 100%
+                        );
+            }
+        </style>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Theia Sticky Sidebar - <a href="http://foundation.zurb.com/">Foundation</a> example</h1>
+            
+            <button onclick="this.disabled = true; testTheiaStickySidebars();">Run the self-assessment test</button> (May take a while. Be sure to not scroll or resize the window.)
+        </div>
+        
+        <header>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div style="height: 200px;"></div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <div class="row">
+                <div class="small-3 columns">
+                    <div style="height: 300px;"></div>
+                </div>
+                
+                <div class="small-6 columns">
+                    <div style="height: 1000px;"></div>
+                </div>
+                
+                <div class="small-3 columns">
+                    <div style="height: 500px;"></div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <div class="row">
+                <div class="small-12 columns">
+                    <div style="height: 200px;"></div>
+                </div>
+            </div>
+        </footer>
+
+        <script>        
+            $(document).ready(function() {
+                $('section .columns').theiaStickySidebar();
+            });
+        </script>
+    </body>
+</html>
