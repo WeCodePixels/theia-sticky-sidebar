@@ -153,11 +153,14 @@
 					top = Math.max(top, staticLimitTop);
 
 					top = Math.min(top, staticLimitBottom - o.stickySidebar.outerHeight());
-					
-					if (top == windowOffsetTop) {
+                    
+                    // If the sidebar is the same height as the container, we won't use fixed positioning.
+                    var sidebarSameHeightAsContainer = o.container.height() == o.stickySidebar.outerHeight();
+                    
+					if (!sidebarSameHeightAsContainer && top == windowOffsetTop) {
 						position = 'fixed';
 					}
-					else if (top == windowOffsetBottom - o.stickySidebar.outerHeight()) {
+					else if (!sidebarSameHeightAsContainer && top == windowOffsetBottom - o.stickySidebar.outerHeight()) {
 						position = 'fixed';
 					}
 					else if (scrollTop + top - o.sidebar.offset().top - o.paddingTop <= options.additionalMarginTop) {
