@@ -190,17 +190,17 @@
 					});
 				}
 				else if (position == 'absolute') {
+					var css = {};
+
 					if (o.stickySidebar.css('position') != 'absolute') {
-						o.stickySidebar.css({
-							'position': 'absolute',
-							'top': scrollTop + top - o.sidebar.offset().top - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom
-						});
+						css.position = 'absolute';
+						css.top = scrollTop + top - o.sidebar.offset().top - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom;
 					}
-				
-					o.stickySidebar.css({
-						'width': o.sidebar.width(),
-						'left': ''
-					});
+
+					css.width = o.sidebar.width();
+					css.left = '';
+
+					o.stickySidebar.css(css);
 				}
 				else if (position == 'static') {
 					resetSidebar();
