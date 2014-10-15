@@ -1,8 +1,8 @@
 {
   "name": "theia-sticky-sidebar",
-  "description": "Glues your website's sidebars, making them permanently visible when scrolling.",
+  "description": "Glues your website's sidebars, making them permanently visible while scrolling.",
   "authors": [
-    "Liviu Cristian Mirea Ghiban <contact@liviucmg.com>"
+    "WeCodePixels <contact@wecodepixels.com>"
   ],
   "license": "MIT",
   "main": "js/theia-sticky-sidebar.js",
