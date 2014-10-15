@@ -40,6 +40,7 @@
 			o.sidebar.parents().css('-webkit-transform', 'none'); // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
 			o.sidebar.css({
 				'position': 'relative',
+				'overflow': 'visible',
 				// The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
 				'-webkit-box-sizing': 'border-box',
 				'-moz-box-sizing': 'border-box',
@@ -88,8 +89,11 @@
 
 			// Scroll top (value) when the sidebar has fixed position.
 			o.fixedScrollTop = 0;
+			
+			// Set sidebar to default values.
+			resetSidebar();
 
-			o.onScroll = function(o) {				
+			o.onScroll = function(o) {
 				// Stop if the sidebar isn't visible.
 				if (!o.stickySidebar.is(":visible")) {
 					return;
@@ -153,10 +157,10 @@
 					top = Math.max(top, staticLimitTop);
 
 					top = Math.min(top, staticLimitBottom - o.stickySidebar.outerHeight());
-                    
-                    // If the sidebar is the same height as the container, we won't use fixed positioning.
-                    var sidebarSameHeightAsContainer = o.container.height() == o.stickySidebar.outerHeight();
-                    
+					
+					// If the sidebar is the same height as the container, we won't use fixed positioning.
+					var sidebarSameHeightAsContainer = o.container.height() == o.stickySidebar.outerHeight();
+					
 					if (!sidebarSameHeightAsContainer && top == windowOffsetTop) {
 						position = 'fixed';
 					}
@@ -176,12 +180,6 @@
 				 * It's way slower to first check if the values have changed.
 				 */
 				if (position == 'fixed') {
-					if (o.options.updateSidebarHeight == false) {
-						o.sidebar.css({
-							//'min-height': o.sidebar.outerHeight()
-						});
-					}
-
 					o.stickySidebar.css({
 						'position': 'fixed',
 						'width': o.sidebar.width(),
@@ -237,7 +235,7 @@
 			function resetSidebar() {
 				o.fixedScrollTop = 0;
 				o.sidebar.css({
-					'min-height': '0px'
+					'min-height': '1px'
 				});
 				o.stickySidebar.css({
 					'position': 'static',

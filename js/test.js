@@ -28,8 +28,6 @@ function testTheiaStickySidebars() {
                         
                         // Highlight sidebar.
                         $($('.theiaStickySidebar')[j]).css('background', 'yellow');
-                        
-                        console.log('nope');
                     }
                 }
                 
