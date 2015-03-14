@@ -183,11 +183,16 @@
 				 * It's way slower to first check if the values have changed.
 				 */
 				if (position == 'fixed') {
+
+					var osidebar = o.sidebar.css('padding-left');
+					var osidebarnum = Number(osidebar.substr(0, osidebar.length - 2));
+
+					
 					o.stickySidebar.css({
 						'position': 'fixed',
 						'width': o.sidebar.width(),
 						'top': top,
-						'left': o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))
+						'left': o.sidebar.offset().left + osidebarnum
 					});
 				}
 				else if (position == 'absolute') {
