@@ -187,7 +187,7 @@
 						'position': 'fixed',
 						'width': o.sidebar.width(),
 						'top': top,
-						'left': o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))
+						'left': o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))  + parseInt(o.sidebar.css('border-left'))
 					});
 				}
 				else if (position == 'absolute') {
