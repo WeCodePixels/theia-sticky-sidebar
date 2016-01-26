@@ -77,8 +77,6 @@
 			$('head').append($('<style>.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>'));
 
 			$that.each(function () {
-				console.log('TST: Doing init.');
-
 				var o = {};
 
 				o.sidebar = $(this);
