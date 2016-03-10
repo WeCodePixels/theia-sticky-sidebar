@@ -1,10 +1,10 @@
 /*!
- * Theia Sticky Sidebar v1.3.0
+ * Theia Sticky Sidebar v1.3.1
  * https://github.com/WeCodePixels/theia-sticky-sidebar
  *
  * Glues your website's sidebars, making them permanently visible while scrolling.
  *
- * Copyright 2013-2014 WeCodePixels and other contributors
+ * Copyright 2013-2016 WeCodePixels and other contributors
  * Released under the MIT license
  */
 
@@ -16,6 +16,7 @@
 			'additionalMarginBottom': 0,
 			'updateSidebarHeight': true,
 			'minWidth': 0,
+			'disableOnResponsiveLayouts': true,
 			'sidebarBehavior': 'modern'
 		};
 		options = $.extend(defaults, options);
@@ -160,9 +161,11 @@
 					}
 
 					// Stop if the sidebar width is larger than the container width (e.g. the theme is responsive and the sidebar is now below the content)
-					if (o.sidebar.outerWidth(true) + 50 > o.container.width()) {
-						resetSidebar();
-						return;
+					if (o.options.disableOnResponsiveLayouts) {
+						if (o.sidebar.outerWidth(true) + 50 > o.container.width()) {
+							resetSidebar();
+							return;
+						}
 					}
 
 					var scrollTop = $(document).scrollTop();
