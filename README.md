@@ -4,6 +4,8 @@
 
 Glues your website's sidebars (or any vertical column for that matter), making them permanently visible when scrolling up and down. Useful when a sidebar is too tall or too short compared to the rest of the content. Works with virtually any design and supports multiple sidebars.
 
+Also available as a [WordPress plugin](http://codecanyon.net/item/theia-sticky-sidebar-for-wordpress/5150066?ref=WeCodePixels) that comes with a user-friendly admin panel.
+
 Check out these examples:
 
 [3 columns example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/3-columns.html)
