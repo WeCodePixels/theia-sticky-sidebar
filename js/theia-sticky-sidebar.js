@@ -87,7 +87,7 @@
 
                 // Get container
                 o.container = $(o.options.containerSelector);
-                if (o.container.size() == 0) {
+                if (o.container.length == 0) {
                     o.container = o.sidebar.parent();
                 }
 
