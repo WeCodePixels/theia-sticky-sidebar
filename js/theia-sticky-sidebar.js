@@ -105,7 +105,12 @@
                 // Get the sticky sidebar element. If none has been found, then create one.
                 o.stickySidebar = o.sidebar.find('.theiaStickySidebar');
                 if (o.stickySidebar.length == 0) {
-                    o.sidebar.find('script').remove(); // Remove <script> tags, otherwise they will be run again on the next line.
+                    // Remove <script> tags, otherwise they will be run again when added to the stickySidebar.
+                    var javaScriptMIMETypes = /(?:text|application)\/(?:x-)?(?:javascript|ecmascript)/i;
+                    o.sidebar.find('script').filter(function(index, script) {
+                        return script.type.length === 0 || script.type.match(javaScriptMIMETypes);
+                    }).remove();
+
                     o.stickySidebar = $('<div>').addClass('theiaStickySidebar').append(o.sidebar.children());
                     o.sidebar.append(o.stickySidebar);
                 }
