@@ -94,7 +94,6 @@
                 // Create sticky sidebar
                 o.sidebar.parents().css('-webkit-transform', 'none'); // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
                 o.sidebar.css({
-                    'position': 'relative',
                     'overflow': 'visible',
                     // The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
                     '-webkit-box-sizing': 'border-box',
