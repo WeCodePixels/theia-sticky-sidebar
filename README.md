@@ -84,3 +84,7 @@ Updates the sidebar's height. Use this if the background isn't showing properly,
 ### minWidth
 
 The sidebar returns to normal if its width is below this value. Useful for responsive designs. Defaults to **0**.
+
+## Credits
+
+Stock photos courtesy of [Unsplash.com](https://unsplash.com/)
