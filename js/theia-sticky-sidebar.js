@@ -1,5 +1,5 @@
 /*!
- * Theia Sticky Sidebar v1.4.0
+ * Theia Sticky Sidebar v1.5.0
  * https://github.com/WeCodePixels/theia-sticky-sidebar
  *
  * Glues your website's sidebars, making them permanently visible while scrolling.
