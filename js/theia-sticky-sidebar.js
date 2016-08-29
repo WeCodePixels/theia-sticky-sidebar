@@ -32,7 +32,7 @@
             var success = tryInit(options, $that);
 
             if (!success) {
-                console.log('TST: Body width smaller than options.minWidth. Init is delayed.');
+                console.log('TSS: Body width smaller than options.minWidth. Init is delayed.');
 
                 $(document).scroll(function (options, $that) {
                     return function (evt) {
@@ -258,9 +258,10 @@
                     if (position == 'fixed') {
                         o.stickySidebar.css({
                             'position': 'fixed',
-                            'width': o.sidebar.width(),
-                            'top': top,
-                            'left': o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))
+                            'width': getWidthForObject(o.stickySidebar) + 'px',
+                            'transform': 'translateY(' + top + 'px)',
+                            'left': (o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))) + 'px',
+                            'top': '0px'
                         });
                     }
                     else if (position == 'absolute') {
@@ -268,10 +269,11 @@
 
                         if (o.stickySidebar.css('position') != 'absolute') {
                             css.position = 'absolute';
-                            css.top = scrollTop + top - o.sidebar.offset().top - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom;
+                            css.transform = 'translateY(' + (scrollTop + top - o.sidebar.offset().top - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
+                            css.top = '0px';
                         }
 
-                        css.width = o.sidebar.width();
+                        css.width = getWidthForObject(o.stickySidebar) + 'px';
                         css.left = '';
 
                         o.stickySidebar.css(css);
@@ -315,7 +317,8 @@
                     });
                     o.stickySidebar.css({
                         'position': 'static',
-                        'width': ''
+                        'width': '',
+                        'transform': 'none'
                     });
                 }
 
@@ -330,6 +333,22 @@
                     return height;
                 }
             });
+        }
+        
+        function getWidthForObject(object) {
+            var width;
+            
+            try {
+                width = object[0].getBoundingClientRect().width;
+            }
+            catch(err) {
+            }
+            
+            if (typeof width === "undefined") {
+                width = object.width();
+            }
+            
+            return width;
         }
     }
 })(jQuery);
