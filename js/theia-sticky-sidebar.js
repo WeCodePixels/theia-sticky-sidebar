@@ -116,7 +116,6 @@
                 }
 
                 // Get existing top and bottom margins and paddings
-                o.marginTop = parseInt(o.sidebar.css('margin-top'));
                 o.marginBottom = parseInt(o.sidebar.css('margin-bottom'));
                 o.paddingTop = parseInt(o.sidebar.css('padding-top'));
                 o.paddingBottom = parseInt(o.sidebar.css('padding-bottom'));
@@ -179,14 +178,14 @@
                     var position = 'static';
 
                     // If the user has scrolled down enough for the sidebar to be clipped at the top, then we can consider changing its position.
-                    if (scrollTop >= o.container.offset().top + (o.paddingTop + o.marginTop - o.options.additionalMarginTop)) {
+                    if (scrollTop >= o.sidebar.offset().top + (o.paddingTop - o.options.additionalMarginTop)) {
                         // The top and bottom offsets, used in various calculations.
-                        var offsetTop = o.paddingTop + o.marginTop + options.additionalMarginTop;
+                        var offsetTop = o.paddingTop + options.additionalMarginTop;
                         var offsetBottom = o.paddingBottom + o.marginBottom + options.additionalMarginBottom;
 
                         // All top and bottom positions are relative to the window, not to the parent elemnts.
-                        var containerTop = o.container.offset().top;
-                        var containerBottom = o.container.offset().top + getClearedHeight(o.container);
+                        var containerTop = o.sidebar.offset().top;
+                        var containerBottom = o.sidebar.offset().top + getClearedHeight(o.container);
 
                         // The top and bottom offsets relative to the window screen top (zero) and bottom (window height).
                         var windowOffsetTop = 0 + options.additionalMarginTop;
@@ -200,7 +199,7 @@
                             windowOffsetBottom = $(window).height() - o.marginBottom - o.paddingBottom - options.additionalMarginBottom;
                         }
 
-                        var staticLimitTop = containerTop - scrollTop + o.paddingTop + o.marginTop;
+                        var staticLimitTop = containerTop - scrollTop + o.paddingTop;
                         var staticLimitBottom = containerBottom - scrollTop - o.paddingBottom - o.marginBottom;
 
                         var top = o.stickySidebar.offset().top - scrollTop;
