@@ -255,11 +255,12 @@
                      * It's way slower to first check if the values have changed.
                      */
                     if (position == 'fixed') {
+                        var scrollLeft = $(document).scrollLeft();
                         o.stickySidebar.css({
                             'position': 'fixed',
                             'width': getWidthForObject(o.stickySidebar) + 'px',
                             'transform': 'translateY(' + top + 'px)',
-                            'left': (o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))) + 'px',
+                            'left': (o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left')) - scrollLeft) + 'px',
                             'top': '0px'
                         });
                     }
