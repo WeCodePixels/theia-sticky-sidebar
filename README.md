@@ -12,16 +12,26 @@ Check out these examples:
 
 [4 columns example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/4-columns.html)
 
+[Bootstrap 4 example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/bootstrap-v4.html)
+
 [Foundation example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/foundation.html)
 
 ## Install
 
 ### Bower
 
-If you are using Bower as your package manager, you can simply use:
+If you are using Bower as your package manager:
 
 ```bash
 bower install theia-sticky-sidebar
+```
+
+### NPM
+
+If you are using NPM as your package manager:
+
+```bash
+npm install theia-sticky-sidebar
 ```
 
 ## Usage
@@ -51,17 +61,24 @@ For the above example, you can use the following JavaScript:
 
 ```html
 <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="theia-sticky-sidebar.js"></script>
+<script type="text/javascript" src="dist/ResizeSensor.min.js"></script>
+<script type="text/javascript" src="dist/theia-sticky-sidebar.min.js"></script>
 		
 <script type="text/javascript">
   jQuery(document).ready(function() {
     jQuery('.content, .sidebar').theiaStickySidebar({
-	  // Settings
+      // Settings
       additionalMarginTop: 30
     });
   });
 </script>
 ```
+
+### ResizeSensor
+
+Theia Sticky Sidebar uses the [CSS Element Queries](https://github.com/marcj/css-element-queries) library to detect when your sidebars change height, the afterwards recalculate their positions. This can happen if you are using an [accordion](http://v4-alpha.getbootstrap.com/components/collapse/#accordion-example), for example.
+
+You can choose **not** to include the `ResizeSensor.min.js` script in your page, in which case Theia Sticky Sidebar will continue to function (possibly even a bit smoother) but will not automatically detect height changes.
 
 ## Settings
 
