@@ -36,3 +36,9 @@ img {
 p {
 	margin: 30px 0;
 }
+
+.col-md-4 > div,
+.col-md-12 > div {
+    border: 1px solid #0275d8;
+    padding: 10px;
+}
