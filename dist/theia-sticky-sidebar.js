@@ -1,5 +1,5 @@
 /*!
- * Theia Sticky Sidebar v1.5.0
+ * Theia Sticky Sidebar v1.6.0
  * https://github.com/WeCodePixels/theia-sticky-sidebar
  *
  * Glues your website's sidebars, making them permanently visible while scrolling.
@@ -107,7 +107,7 @@
                 if (o.stickySidebar.length == 0) {
                     // Remove <script> tags, otherwise they will be run again when added to the stickySidebar.
                     var javaScriptMIMETypes = /(?:text|application)\/(?:x-)?(?:javascript|ecmascript)/i;
-                    o.sidebar.find('script').filter(function(index, script) {
+                    o.sidebar.find('script').filter(function (index, script) {
                         return script.type.length === 0 || script.type.match(javaScriptMIMETypes);
                     }).remove();
 
@@ -255,11 +255,13 @@
                      * It's way slower to first check if the values have changed.
                      */
                     if (position == 'fixed') {
+                        var scrollLeft = $(document).scrollLeft();
+
                         o.stickySidebar.css({
                             'position': 'fixed',
                             'width': getWidthForObject(o.stickySidebar) + 'px',
                             'transform': 'translateY(' + top + 'px)',
-                            'left': (o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left'))) + 'px',
+                            'left': (o.sidebar.offset().left + parseInt(o.sidebar.css('padding-left')) - scrollLeft) + 'px',
                             'top': '0px'
                         });
                     }
@@ -307,7 +309,7 @@
                         o.onScroll(o);
                     };
                 }(o));
-                
+
                 // Recalculate the sidebar's position every time the sidebar changes its size.
                 if (typeof ResizeSensor !== 'undefined') {
                     new ResizeSensor(o.stickySidebar[0], function (o) {
@@ -342,20 +344,20 @@
                 }
             });
         }
-        
+
         function getWidthForObject(object) {
             var width;
-            
+
             try {
                 width = object[0].getBoundingClientRect().width;
             }
-            catch(err) {
+            catch (err) {
             }
-            
+
             if (typeof width === "undefined") {
                 width = object.width();
             }
-            
+
             return width;
         }
     }
