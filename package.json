@@ -5,18 +5,19 @@
     "WeCodePixels <contact@wecodepixels.com>"
   ],
   "license": "MIT",
-  "main": "js/theia-sticky-sidebar.js",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "main": "dist/theia-sticky-sidebar.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WeCodePixels/theia-sticky-sidebar.git"
+  },
   "dependencies": {
     "jquery": ">=1.7.0"
   },
   "devDependencies": {
-    "css-element-queries": "https://github.com/marcj/css-element-queries.git"
+    "gulp": "^3.9.1",
+    "gulp-sourcemaps": "*",
+    "gulp-concat": "*",
+    "gulp-uglify": "*",
+    "css-element-queries": "*"
   }
 }
