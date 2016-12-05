@@ -309,6 +309,15 @@
                     };
                 }(o));
 
+                // Recalculate the sidebar's position every time the sidebar changes its size.
+                if (typeof ResizeSensor !== 'undefined') {
+                    new ResizeSensor(o.stickySidebar[0], function (o) {
+                        return function () {
+                            o.onScroll(o);
+                        };
+                    }(o));
+                }
+
                 // Reset the sidebar to its default state
                 function resetSidebar() {
                     o.fixedScrollTop = 0;
