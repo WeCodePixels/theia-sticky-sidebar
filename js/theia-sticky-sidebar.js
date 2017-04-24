@@ -77,7 +77,10 @@
             options.initialized = true;
 
             // Add CSS
-            $('head').append($('<style>.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>'));
+            var existingStylesheet = $('#theia-sticky-sidebar-stylesheet-' + options.namespace);
+            if (existingStylesheet.length === 0) {
+                $('head').append($('<style id="theia-sticky-sidebar-stylesheet-' + options.namespace + '">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>'));
+            }
 
             $that.each(function () {
                 var o = {};
