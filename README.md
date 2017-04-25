@@ -76,7 +76,7 @@ For the above example, you can use the following JavaScript:
 
 ### ResizeSensor
 
-Theia Sticky Sidebar uses the [CSS Element Queries](https://github.com/marcj/css-element-queries) library to detect when your sidebars change height, the afterwards recalculate their positions. This can happen if you are using an [accordion](http://v4-alpha.getbootstrap.com/components/collapse/#accordion-example), for example.
+Theia Sticky Sidebar uses the [CSS Element Queries](https://github.com/marcj/css-element-queries) library to detect when your sidebars change height, so that it can recalculate their positions. This can happen if you are using an [accordion](http://v4-alpha.getbootstrap.com/components/collapse/#accordion-example), for example.
 
 You can choose **not** to include the `ResizeSensor.min.js` script in your page, in which case Theia Sticky Sidebar will continue to function (possibly even a bit smoother) but will not automatically detect height changes.
 
@@ -101,6 +101,14 @@ Updates the sidebar's height. Use this if the background isn't showing properly,
 ### minWidth
 
 The sidebar returns to normal if its width is below this value. Useful for responsive designs. Defaults to **0**.
+
+### defaultPosition
+
+The sidebar must have a non-static `position`, as the inner sticky-sidebar uses `position: absolute`. Defaults to **relative**.
+
+### namespace
+
+Events are binded using a namespace, so that you may unbind them later on without affecting others. Defaults to **TSS**.
 
 ## Credits
 
