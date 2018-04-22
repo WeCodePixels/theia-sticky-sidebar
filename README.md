@@ -57,6 +57,8 @@ Note that the inner "theiaStickySidebar" divs are optional, but highly recommend
 If you don't supply them yourself, the script will create them for you, but this can be problematic
 if you're using ads or iframes, since they will be moved around in the DOM and as a result will get reloaded.
 
+**Note:** Make sure to use `<!DOCTYPE html>` in your page, otherwise you might run into weird issues.
+
 For the above example, you can use the following JavaScript:
 
 ```html
@@ -101,6 +103,10 @@ Updates the sidebar's height. Use this if the background isn't showing properly,
 ### minWidth
 
 The sidebar returns to normal if its width is below this value. Useful for responsive designs. Defaults to **0**.
+
+### disableOnResponsiveLayouts
+
+Try to detect responsive layouts automatically and disable the sticky functionality on smaller screens. More exactly, it detects when the container and the sidebar are moved one on top of the other, instead of showing up side-by-side. Defaults to **true**.
 
 ### defaultPosition
 
