@@ -1,12 +1,14 @@
 # Theia Sticky Sidebar
 
-![Theia Sticky Sidebar logo](https://raw.githubusercontent.com/liviucmg/theia-sticky-sidebar/master/assets/logo.png "Theia Sticky Sidebar logo")
+A JavaScript library that glues your website's sidebars (or any vertical column for that matter), making them permanently visible when scrolling up and down. Useful when a sidebar is too tall or too short compared to the rest of the content. Works with virtually any design and supports multiple sidebars.
 
-Glues your website's sidebars (or any vertical column for that matter), making them permanently visible when scrolling up and down. Useful when a sidebar is too tall or too short compared to the rest of the content. Works with virtually any design and supports multiple sidebars.
+## WordPress
 
-Also available as a [WordPress plugin](http://codecanyon.net/item/theia-sticky-sidebar-for-wordpress/5150066?ref=WeCodePixels) that comes with a user-friendly admin panel.
+![Theia Sticky Sidebar for WordPress](https://github.com/liviucmg/theia-sticky-sidebar/blob/master/assets/theia-sticky-sidebar-for-wordpress-banner.png)
 
-Check out these examples:
+Also available as a [premium WordPress plugin](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/) that comes with a user-friendly admin panel and supports a plethora of themes out-of-the-box.
+
+## Examples
 
 [3 columns example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/3-columns.html)
 
