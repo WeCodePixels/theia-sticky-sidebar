@@ -4,7 +4,7 @@ A JavaScript library that glues your website's sidebars (or any vertical column 
 
 ## WordPress
 
-![Theia Sticky Sidebar for WordPress](https://github.com/liviucmg/theia-sticky-sidebar/blob/master/assets/theia-sticky-sidebar-for-wordpress-banner.png)
+[![Theia Sticky Sidebar for WordPress](https://github.com/liviucmg/theia-sticky-sidebar/blob/master/assets/theia-sticky-sidebar-for-wordpress-banner.png)](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/)
 
 Also available as a [premium WordPress plugin](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/) that comes with a user-friendly admin panel and supports a plethora of themes out-of-the-box.
 
