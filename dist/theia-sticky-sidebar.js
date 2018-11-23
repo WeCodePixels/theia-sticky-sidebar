@@ -19,7 +19,8 @@
             'disableOnResponsiveLayouts': true,
             'sidebarBehavior': 'modern',
             'defaultPosition': 'relative',
-            'namespace': 'TSS'
+            'namespace': 'TSS',
+            'activeClass': 'activeSticky'
         };
         options = $.extend(defaults, options);
 
@@ -259,9 +260,10 @@
                      * Performance notice: It's OK to set these CSS values at each resize/scroll, even if they don't change.
                      * It's way slower to first check if the values have changed.
                      */
+
                     if (position == 'fixed') {
                         var scrollLeft = $(document).scrollLeft();
-
+                        o.sidebar.addClass(options.activeClass);
                         o.stickySidebar.css({
                             'position': 'fixed',
                             'width': getWidthForObject(o.stickySidebar) + 'px',
@@ -272,7 +274,7 @@
                     }
                     else if (position == 'absolute') {
                         var css = {};
-
+                        o.sidebar.removeClass(options.activeClass);
                         if (o.stickySidebar.css('position') != 'absolute') {
                             css.position = 'absolute';
                             css.transform = 'translateY(' + (scrollTop + top - o.sidebar.offset().top - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
@@ -330,6 +332,7 @@
                     o.sidebar.css({
                         'min-height': '1px'
                     });
+                    o.sidebar.removeClass(options.activeClass);
                     o.stickySidebar.css({
                         'position': 'static',
                         'width': '',
