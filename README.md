@@ -10,13 +10,13 @@ Also available as a [premium WordPress plugin](https://wecodepixels.com/shop/the
 
 ## Examples
 
-[3 columns example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/3-columns.html)
+[3 columns example](http://theia-sticky-sidebar.wecodepixels.com/examples/3-columns.html)
 
-[4 columns example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/4-columns.html)
+[4 columns example](http://theia-sticky-sidebar.wecodepixels.com/examples/4-columns.html)
 
-[Bootstrap 4 example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/bootstrap-v4.html)
+[Bootstrap 4 example](http://theia-sticky-sidebar.wecodepixels.com/examples/bootstrap-v4.html)
 
-[Foundation example](http://htmlpreview.github.io/?https://github.com/liviucmg/theia-sticky-sidebar/blob/master/examples/foundation.html)
+[Foundation example](http://theia-sticky-sidebar.wecodepixels.com/examples/foundation.html)
 
 ## Install
 
