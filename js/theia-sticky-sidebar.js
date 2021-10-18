@@ -10,7 +10,7 @@
 
 (function ($) {
     $.fn.theiaStickySidebar = function (options) {
-        var defaults = {
+        const defaults = {
             'containerSelector': '',
             'additionalMarginTop': 0,
             'additionalMarginBottom': 0,
@@ -21,7 +21,7 @@
             'defaultPosition': 'relative',
             'namespace': 'TSS'
         };
-        options = $.extend(defaults, options);
+        Object.assign(options, defaults);
 
         // Validate options
         options.additionalMarginTop = parseInt(options.additionalMarginTop) || 0;
@@ -31,26 +31,26 @@
 
         // Try doing init, otherwise hook into window.resize and document.scroll and try again then.
         function tryInitOrHookIntoEvents(options, $that) {
-            var success = tryInit(options, $that);
+            const success = tryInit(options, $that);
 
             if (!success) {
                 console.log('TSS: Body width smaller than options.minWidth. Init is delayed.');
 
-                $(document).on('scroll.' + options.namespace, function (options, $that) {
+                document.addEventListener('scroll.' + options.namespace, function (options, $that) {
                     return function (evt) {
-                        var success = tryInit(options, $that);
+                        const success = tryInit(options, $that);
 
                         if (success) {
-                            $(this).unbind(evt);
+                            document.removeEventListener('scroll.' + options.namespace, evt);
                         }
                     };
                 }(options, $that));
-                $(window).on('resize.' + options.namespace, function (options, $that) {
+                window.addEventListener('resize.' + options.namespace, function (options, $that) {
                     return function (evt) {
-                        var success = tryInit(options, $that);
+                        const success = tryInit(options, $that);
 
                         if (success) {
-                            $(this).unbind(evt);
+                            window.removeEventListener('resize.' + options.namespace, evt);
                         }
                     };
                 }(options, $that))
@@ -63,7 +63,7 @@
                 return true;
             }
 
-            if ($('body').width() < options.minWidth) {
+            if (document.querySelector('body').getBoundingClientRect().width < options.minWidth) {
                 return false;
             }
 
@@ -77,59 +77,66 @@
             options.initialized = true;
 
             // Add CSS
-            var existingStylesheet = $('#theia-sticky-sidebar-stylesheet-' + options.namespace);
+            const existingStylesheet = document.getElementById('theia-sticky-sidebar-stylesheet-' + options.namespace);
             if (existingStylesheet.length === 0) {
-                $('head').append($('<style id="theia-sticky-sidebar-stylesheet-' + options.namespace + '">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>'));
+                document.querySelector('head').insertAdjacentHTML(
+                    "beforeend", '<style id="theia-sticky-sidebar-stylesheet-' + options.namespace + '">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>');
             }
 
-            $that.each(function () {
-                var o = {};
+            $that.forEach(function () {
+                const o = {};
 
-                o.sidebar = $(this);
+                o.sidebar = document;
 
                 // Save options
                 o.options = options || {};
 
                 // Get container
-                o.container = $(o.options.containerSelector);
+                o.container = document.querySelectorAll(o.options.containerSelector);
                 if (o.container.length == 0) {
-                    o.container = o.sidebar.parent();
+                    o.container = o.sidebar.parentNode;
                 }
 
                 // Create sticky sidebar
-                o.sidebar.parents().css('-webkit-transform', 'none'); // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
-                o.sidebar.css({
+                let parentNode = o.sidebar.parentNode;
+                while(parentNode) {
+                    parentNode.style['-webkit-transform'] ='none'; // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
+                    parentNode = parentNode.parentNode;
+                }
+                o.sidebar.style = {
                     'position': o.options.defaultPosition,
                     'overflow': 'visible',
                     // The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
                     '-webkit-box-sizing': 'border-box',
                     '-moz-box-sizing': 'border-box',
                     'box-sizing': 'border-box'
-                });
+                };
 
                 // Get the sticky sidebar element. If none has been found, then create one.
-                o.stickySidebar = o.sidebar.find('.theiaStickySidebar');
+                o.stickySidebar = o.sidebar.querySelectorAll('.theiaStickySidebar');
                 if (o.stickySidebar.length == 0) {
                     // Remove <script> tags, otherwise they will be run again when added to the stickySidebar.
-                    var javaScriptMIMETypes = /(?:text|application)\/(?:x-)?(?:javascript|ecmascript)/i;
-                    o.sidebar.find('script').filter(function (index, script) {
+                    const javaScriptMIMETypes = /(?:text|application)\/(?:x-)?(?:javascript|ecmascript)/i;
+                    o.sidebar.querySelectorAll('script').filter(function (index, script) {
                         return script.type.length === 0 || script.type.match(javaScriptMIMETypes);
                     }).remove();
 
-                    o.stickySidebar = $('<div>').addClass('theiaStickySidebar').append(o.sidebar.children());
-                    o.sidebar.append(o.stickySidebar);
+                    o.stickySidebar = insertAdjacentHTML(
+                        "beforeend", '<div class="theiaStickySidebar">' + o.sidebar.children + '</div>');
+                    o.sidebar.insertAdjacentHTML(
+                        "beforeend", o.stickySidebar);
                 }
 
                 // Get existing top and bottom margins and paddings
-                o.marginBottom = parseInt(o.sidebar.css('margin-bottom'));
-                o.paddingTop = parseInt(o.sidebar.css('padding-top'));
-                o.paddingBottom = parseInt(o.sidebar.css('padding-bottom'));
+                o.marginBottom = parseInt(o.sidebar.getComputedStyle('margin-bottom'));
+                o.paddingTop = parseInt(o.sidebar.getComputedStyle('padding-top'));
+                o.paddingBottom = parseInt(o.sidebar.getComputedStyle('padding-bottom'));
 
                 // Add a temporary padding rule to check for collapsable margins.
-                var collapsedTopHeight = o.stickySidebar.offset().top;
-                var collapsedBottomHeight = o.stickySidebar.outerHeight();
-                o.stickySidebar.css('padding-top', 1);
-                o.stickySidebar.css('padding-bottom', 1);
+                let collapsedTopHeight = o.stickySidebar.offset().top;
+                let collapsedBottomHeight = o.stickySidebar.outerHeight();
+                o.stickySidebar.style.paddingTop = '1';
+                o.stickySidebar.style.paddingBottom = '1';
                 collapsedTopHeight -= o.stickySidebar.offset().top;
                 collapsedBottomHeight = o.stickySidebar.outerHeight() - collapsedBottomHeight - collapsedTopHeight;
                 if (collapsedTopHeight == 0) {
@@ -159,7 +166,7 @@
 
                 o.onScroll = function (o) {
                     // Stop if the sidebar isn't visible.
-                    if (!o.stickySidebar.is(":visible")) {
+                    if (!o.stickySidebar.style.display(":visible")) {
                         return;
                     }
 
@@ -179,7 +186,7 @@
                         }
                     }
 
-                    var scrollTop = $(document).scrollTop();
+                    var scrollTop = window.scrollTop();
                     var position = 'static';
 
                     // If the user has scrolled down enough for the sidebar to be clipped at the top, then we can consider changing its position.
