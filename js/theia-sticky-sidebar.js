@@ -99,8 +99,8 @@ const theiaStickySidebar = (options) => {
 
             // Create sticky sidebar
             let parentNode = o.sidebar.parentNode;
-            while (parentNode) {
-                parentNode.style['-webkit-transform'] = 'none'; // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
+            while (parentNode && parentNode !== document) {
+                parentNode.style.setProperty('-webkit-transform', 'none'); // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
                 parentNode = parentNode.parentNode;
             }
             o.sidebar.style = {
@@ -117,29 +117,34 @@ const theiaStickySidebar = (options) => {
             if (o.stickySidebar.length == 0) {
                 // Remove <script> tags, otherwise they will be run again when added to the stickySidebar.
                 const javaScriptMIMETypes = /(?:text|application)\/(?:x-)?(?:javascript|ecmascript)/i;
-                o.sidebar.querySelectorAll('script').filter(function (index, script) {
-                    return script.type.length === 0 || script.type.match(javaScriptMIMETypes);
-                }).remove();
+                Array.from(o.sidebar.querySelectorAll('script')).forEach((script) => {
+                    if (script.type.length === 0 || script.type.match(javaScriptMIMETypes)) {
+                        script.remove();
+                    }
+                });
 
-                o.stickySidebar = insertAdjacentHTML(
-                    "beforeend", '<div class="theiaStickySidebar">' + o.sidebar.children + '</div>');
-                o.sidebar.insertAdjacentHTML(
-                    "beforeend", o.stickySidebar);
+                o.stickySidebar = document.createElement('div');
+                o.stickySidebar.classList.add('theiaStickySidebar');
+                Array.from(o.sidebar.children).forEach(child => {
+                    o.stickySidebar.appendChild(child);
+                })
+                o.sidebar.appendChild(o.stickySidebar);
             }
 
             // Get existing top and bottom margins and paddings
-            o.marginBottom = parseInt(o.sidebar.getComputedStyle('margin-bottom'));
-            o.paddingTop = parseInt(o.sidebar.getComputedStyle('padding-top'));
-            o.paddingBottom = parseInt(o.sidebar.getComputedStyle('padding-bottom'));
+            const computedStyle = window.getComputedStyle(o.sidebar);
+            o.marginBottom = parseInt(computedStyle.getPropertyValue('margin-bottom'));
+            o.paddingTop = parseInt(computedStyle.getPropertyValue('padding-top'));
+            o.paddingBottom = parseInt(computedStyle.getPropertyValue('padding-bottom'));
 
             // Add a temporary padding rule to check for collapsable margins.
             let collapsedTopHeight = o.stickySidebar.offsetTop;
-            let collapsedBottomHeight = o.stickySidebar.outerHeight();
+            let collapsedBottomHeight = o.stickySidebar.offsetHeight;
             o.stickySidebar.style.paddingTop = '1';
             o.stickySidebar.style.paddingBottom = '1';
-            // r look into this https://stackoverflow.com/questions/6139720/pure-javascript-function-similar-to-jquery-offset&#answer-60083373
+            // razvan look into this https://stackoverflow.com/questions/6139720/pure-javascript-function-similar-to-jquery-offset&#answer-60083373
             collapsedTopHeight -= o.stickySidebar.offsetTop;
-            collapsedBottomHeight = o.stickySidebar.outerHeight() - collapsedBottomHeight - collapsedTopHeight;
+            collapsedBottomHeight = o.stickySidebar.offsetHeight - collapsedBottomHeight - collapsedTopHeight;
             if (collapsedTopHeight == 0) {
                 o.stickySidebar.style.paddingTop = '0';
                 o.stickySidebarPaddingTop = 0;
@@ -262,6 +267,7 @@ const theiaStickySidebar = (options) => {
                  * It's way slower to first check if the values have changed.
                  */
                 if (position === 'fixed') {
+                    // var scrollLeft = $(document).scrollLeft();
                     const scrollLeft = window.scrollX;
 
                     o.stickySidebar.style = {
