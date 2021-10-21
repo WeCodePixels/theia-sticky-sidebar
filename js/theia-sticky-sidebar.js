@@ -8,7 +8,7 @@
  * Released under the MIT license
  */
 
-const theiaStickySidebar = (options) => {
+const theiaStickySidebar = (target, options) => {
     const defaults = {
         'containerSelector': '',
         'additionalMarginTop': 0,
@@ -26,8 +26,7 @@ const theiaStickySidebar = (options) => {
     options.additionalMarginTop = parseInt(options.additionalMarginTop) || 0;
     options.additionalMarginBottom = parseInt(options.additionalMarginBottom) || 0;
 
-    const stickyStructure = document.querySelectorAll('.theiaStickySidebar');
-    tryInitOrHookIntoEvents(options, stickyStructure);
+    tryInitOrHookIntoEvents(options, target);
 
     // Try doing init, otherwise hook into window.resize and document.scroll and try again then.
     function tryInitOrHookIntoEvents(options, $that) {
@@ -113,8 +112,8 @@ const theiaStickySidebar = (options) => {
             };
 
             // Get the sticky sidebar element. If none has been found, then create one.
-            o.stickySidebar = o.sidebar.querySelectorAll('.theiaStickySidebar');
-            if (o.stickySidebar.length == 0) {
+            o.stickySidebar = o.sidebar.querySelector('.theiaStickySidebar');
+            if (o.stickySidebar === null) {
                 // Remove <script> tags, otherwise they will be run again when added to the stickySidebar.
                 const javaScriptMIMETypes = /(?:text|application)\/(?:x-)?(?:javascript|ecmascript)/i;
                 Array.from(o.sidebar.querySelectorAll('script')).forEach((script) => {
@@ -253,7 +252,7 @@ const theiaStickySidebar = (options) => {
                         position = 'fixed';
                     } else if (!sidebarSameHeightAsContainer && top == windowOffsetBottom - o.stickySidebar.outerHeight) {
                         position = 'fixed';
-                    } else if (scrollTop + top - o.sidebar.offset().top - o.paddingTop <= options.additionalMarginTop) {
+                    } else if (scrollTop + top - o.sidebar.offsetTop - o.paddingTop <= options.additionalMarginTop) {
                         // Stuck to the top of the page. No special behavior.
                         position = 'static';
                     } else {
@@ -283,7 +282,7 @@ const theiaStickySidebar = (options) => {
 
                     if (o.stickySidebar.style.position !== 'absolute') {
                         css.position = 'absolute';
-                        css.transform = 'translateY(' + (scrollTop + top - o.sidebar.offset().top - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
+                        css.transform = 'translateY(' + (scrollTop + top - o.sidebar.offsetTop - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
                         css.top = '0px';
                     }
 
@@ -345,8 +344,8 @@ const theiaStickySidebar = (options) => {
             function getClearedHeight(e) {
                 let height = e.getBoundingClientRect().height;
 
-                e.children.forEach(function () {
-                    height = Math.max(height, this.getBoundingClientRect().height);
+                Array.from(e.children).forEach(function () {
+                    height = Math.max(height, element.getBoundingClientRect().height);
                 });
 
                 return height;
