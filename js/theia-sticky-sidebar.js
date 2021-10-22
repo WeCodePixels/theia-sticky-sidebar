@@ -20,7 +20,7 @@ const theiaStickySidebar = (target, options) => {
         'defaultPosition': 'relative',
         'namespace': 'TSS'
     };
-    Object.assign(options, defaults);
+    options = Object.assign(defaults, options);
 
     // Validate options
     options.additionalMarginTop = parseInt(options.additionalMarginTop) || 0;
@@ -77,6 +77,7 @@ const theiaStickySidebar = (target, options) => {
 
         // Add CSS
         const existingStylesheet = document.querySelectorAll('#theia-sticky-sidebar-stylesheet-' + options.namespace);
+
         if (existingStylesheet.length === 0) {
             document.querySelector('head').insertAdjacentHTML(
                 "beforeend", '<style id="theia-sticky-sidebar-stylesheet-' + options.namespace + '">.theiaStickySidebar:after {content: ""; display: table; clear: both;}</style>');
@@ -102,14 +103,26 @@ const theiaStickySidebar = (target, options) => {
                 parentNode.style.setProperty('-webkit-transform', 'none'); // Fix for WebKit bug - https://code.google.com/p/chromium/issues/detail?id=20574
                 parentNode = parentNode.parentNode;
             }
-            o.sidebar.style = {
+
+            // o.sidebar.style = {
+            //     'position': o.options.defaultPosition,
+            //     'overflow': 'visible',
+            //     // The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
+            //     '-webkit-box-sizing': 'border-box',
+            //     '-moz-box-sizing': 'border-box',
+            //     'box-sizing': 'border-box'
+            // };
+
+            for (const [key, value] of Object.entries({
                 'position': o.options.defaultPosition,
                 'overflow': 'visible',
                 // The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
                 '-webkit-box-sizing': 'border-box',
                 '-moz-box-sizing': 'border-box',
                 'box-sizing': 'border-box'
-            };
+            })) {
+                o.sidebar.style.setProperty(key, value);
+            }
 
             // Get the sticky sidebar element. If none has been found, then create one.
             o.stickySidebar = o.sidebar.querySelector('.theiaStickySidebar');
@@ -145,14 +158,14 @@ const theiaStickySidebar = (target, options) => {
             collapsedTopHeight -= o.stickySidebar.offsetTop;
             collapsedBottomHeight = o.stickySidebar.offsetHeight - collapsedBottomHeight - collapsedTopHeight;
             if (collapsedTopHeight == 0) {
-                o.stickySidebar.style.paddingTop = '0';
+                o.stickySidebar.style.paddingTop = 0;
                 o.stickySidebarPaddingTop = 0;
             } else {
                 o.stickySidebarPaddingTop = 1;
             }
 
             if (collapsedBottomHeight == 0) {
-                o.stickySidebar.style.paddingBottom = '0';
+                o.stickySidebar.style.paddingBottom = 0;
                 o.stickySidebarPaddingBottom = 0;
             } else {
                 o.stickySidebarPaddingBottom = 1;
@@ -331,13 +344,20 @@ const theiaStickySidebar = (target, options) => {
             // Reset the sidebar to its default state
             function resetSidebar() {
                 o.fixedScrollTop = 0;
-                o.sidebar.style.minHeight = '1px';
-                o.stickySidebar.style = {
-                    ...o.stickySidebar.style,
+                o.sidebar.style.setProperty('min-height', '1px');
+                for (const [key, value] of Object.entries({
                     'position': 'static',
                     'width': '',
                     'transform': 'none'
-                };
+                })) {
+                    o.stickySidebar.style.setProperty(key, value);
+                }
+                // o.stickySidebar.style = {
+                //     ...o.stickySidebar.style,
+                //     'position': 'static',
+                //     'width': '',
+                //     'transform': 'none'
+                // };
             }
 
             // Get the height of a div as if its floated children were cleared. Note that this function fails if the floats are more than one level deep.
