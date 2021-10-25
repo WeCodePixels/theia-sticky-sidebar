@@ -152,20 +152,20 @@ const theiaStickySidebar = (target, options) => {
             // Add a temporary padding rule to check for collapsable margins.
             let collapsedTopHeight = o.stickySidebar.offsetTop;
             let collapsedBottomHeight = o.stickySidebar.offsetHeight;
-            o.stickySidebar.style.paddingTop = '1';
-            o.stickySidebar.style.paddingBottom = '1';
+            o.stickySidebar.style.setProperty('padding-top',1);
+            o.stickySidebar.style.setProperty('padding-bottom', 1);
             // razvan look into this https://stackoverflow.com/questions/6139720/pure-javascript-function-similar-to-jquery-offset&#answer-60083373
             collapsedTopHeight -= o.stickySidebar.offsetTop;
             collapsedBottomHeight = o.stickySidebar.offsetHeight - collapsedBottomHeight - collapsedTopHeight;
             if (collapsedTopHeight == 0) {
-                o.stickySidebar.style.paddingTop = 0;
+                o.stickySidebar.style.setProperty('padding-top', 0);
                 o.stickySidebarPaddingTop = 0;
             } else {
                 o.stickySidebarPaddingTop = 1;
             }
 
             if (collapsedBottomHeight == 0) {
-                o.stickySidebar.style.paddingBottom = 0;
+                o.stickySidebar.style.setProperty('padding-bottom', 0);
                 o.stickySidebarPaddingBottom = 0;
             } else {
                 o.stickySidebarPaddingBottom = 1;
@@ -245,25 +245,25 @@ const theiaStickySidebar = (target, options) => {
                     }
 
                     if (o.options.sidebarBehavior === 'stick-to-bottom') {
-                        top = windowOffsetBottom - o.stickySidebar.outerHeight;
+                        top = windowOffsetBottom - o.stickySidebar.getBoundingClientRect().height;
                     }
 
                     if (scrollTopDiff > 0) { // If the user is scrolling up.
                         top = Math.min(top, windowOffsetTop);
                     } else { // If the user is scrolling down.
-                        top = Math.max(top, windowOffsetBottom - o.stickySidebar.outerHeight);
+                        top = Math.max(top, windowOffsetBottom - o.stickySidebar.getBoundingClientRect().height);
                     }
 
                     top = Math.max(top, staticLimitTop);
 
-                    top = Math.min(top, staticLimitBottom - o.stickySidebar.outerHeight);
+                    top = Math.min(top, staticLimitBottom - o.stickySidebar.getBoundingClientRect().height);
 
                     // If the sidebar is the same height as the container, we won't use fixed positioning.
-                    const sidebarSameHeightAsContainer = o.container.height === o.stickySidebar.outerHeight;
+                    const sidebarSameHeightAsContainer = o.container.height === o.stickySidebar.getBoundingClientRect().height;
 
                     if (!sidebarSameHeightAsContainer && top == windowOffsetTop) {
                         position = 'fixed';
-                    } else if (!sidebarSameHeightAsContainer && top == windowOffsetBottom - o.stickySidebar.outerHeight) {
+                    } else if (!sidebarSameHeightAsContainer && top == windowOffsetBottom - o.stickySidebar.getBoundingClientRect().height) {
                         position = 'fixed';
                     } else if (scrollTop + top - o.sidebar.offsetTop - o.paddingTop <= options.additionalMarginTop) {
                         // Stuck to the top of the page. No special behavior.
@@ -282,14 +282,15 @@ const theiaStickySidebar = (target, options) => {
                     // var scrollLeft = $(document).scrollLeft();
                     const scrollLeft = window.scrollX;
 
-                    o.stickySidebar.style = {
-                        ...o.stickySidebar.style,
+                    for (const [key, value] of Object.entries({
                         'position': 'fixed',
                         'width': getWidthForObject(o.stickySidebar) + 'px',
                         'transform': 'translateY(' + top + 'px)',
-                        'left': (o.sidebar.offset().left + parseInt(o.sidebar.style.paddingLeft) - scrollLeft) + 'px',
+                        'left': (o.sidebar.getBoundingClientRect().left + parseInt(o.sidebar.style.paddingLeft) - scrollLeft) + 'px',
                         'top': '0px'
-                    };
+                    })) {
+                        o.stickySidebar.style.setProperty(key, value);
+                    }
                 } else if (position === 'absolute') {
                     const css = {};
 
@@ -302,14 +303,16 @@ const theiaStickySidebar = (target, options) => {
                     css.width = getWidthForObject(o.stickySidebar) + 'px';
                     css.left = '';
 
-                    o.stickySidebar.style = css;
+                    for (const [key, value] of Object.entries(css)) {
+                        o.stickySidebar.style.setProperty(key, value);
+                    }
                 } else if (position === 'static') {
                     resetSidebar();
                 }
 
                 if (position !== 'static') {
                     if (o.options.updateSidebarHeight === true) {
-                        o.sidebar.style.minHeight = o.stickySidebar.outerHeight + o.stickySidebar.offsetTop - o.sidebar.offsetTop + o.paddingBottom;
+                        o.sidebar.style.setProperty('min-height', o.stickySidebar.outerHeight + o.stickySidebar.offsetTop - o.sidebar.offsetTop + o.paddingBottom);
                     }
                 }
 
@@ -327,7 +330,7 @@ const theiaStickySidebar = (target, options) => {
             }(o));
             window.addEventListener('resize.' + o.options.namespace, function (o) {
                 return function () {
-                    o.stickySidebar.style.position = 'static';
+                    o.stickySidebar.style.setProperty('position', 'static');
                     o.onScroll(o);
                 };
             }(o));
@@ -352,12 +355,6 @@ const theiaStickySidebar = (target, options) => {
                 })) {
                     o.stickySidebar.style.setProperty(key, value);
                 }
-                // o.stickySidebar.style = {
-                //     ...o.stickySidebar.style,
-                //     'position': 'static',
-                //     'width': '',
-                //     'transform': 'none'
-                // };
             }
 
             // Get the height of a div as if its floated children were cleared. Note that this function fails if the floats are more than one level deep.
