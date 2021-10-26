@@ -205,6 +205,7 @@ const theiaStickySidebar = (target, options) => {
 
                 const scrollTop = window.scrollY;
                 let position = 'static';
+                let top = 0;
 
                 // If the user has scrolled down enough for the sidebar to be clipped at the top, then we can consider changing its position.
                 if (scrollTop >= o.sidebar.offsetTop + (o.paddingTop - o.options.additionalMarginTop)) {
@@ -230,7 +231,7 @@ const theiaStickySidebar = (target, options) => {
                     const staticLimitTop = containerTop - scrollTop + o.paddingTop;
                     const staticLimitBottom = containerBottom - scrollTop - o.paddingBottom - o.marginBottom;
 
-                    let top = o.stickySidebar.offsetTop - scrollTop;
+                    top = o.stickySidebar.getBoundingClientRect().top - scrollTop;
                     const scrollTopDiff = o.previousScrollTop - scrollTop;
 
                     // If the sidebar position is fixed, then it won't move up or down by itself. So, we manually adjust the top coordinate.
@@ -279,7 +280,6 @@ const theiaStickySidebar = (target, options) => {
                  * It's way slower to first check if the values have changed.
                  */
                 if (position === 'fixed') {
-                    // var scrollLeft = $(document).scrollLeft();
                     const scrollLeft = window.scrollX;
 
                     for (const [key, value] of Object.entries({
