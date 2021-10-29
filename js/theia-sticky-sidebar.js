@@ -35,21 +35,21 @@ const theiaStickySidebar = (target, options) => {
         if (!success) {
             console.log('TSS: Body width smaller than options.minWidth. Init is delayed.');
 
-            document.addEventListener('scroll.' + options.namespace, function (options, $that) {
+            document.addEventListener('scroll', function (options, $that) {
                 return function (evt) {
                     const success = tryInit(options, $that);
 
                     if (success) {
-                        document.removeEventListener('scroll.' + options.namespace, evt);
+                        document.removeEventListener('scroll', evt);
                     }
                 };
             }(options, $that));
-            window.addEventListener('resize.' + options.namespace, function (options, $that) {
+            window.addEventListener('resize', function (options, $that) {
                 return function (evt) {
                     const success = tryInit(options, $that);
 
                     if (success) {
-                        window.removeEventListener('resize.' + options.namespace, evt);
+                        window.removeEventListener('resize', evt);
                     }
                 };
             }(options, $that))
@@ -104,15 +104,6 @@ const theiaStickySidebar = (target, options) => {
                 parentNode = parentNode.parentNode;
             }
 
-            // o.sidebar.style = {
-            //     'position': o.options.defaultPosition,
-            //     'overflow': 'visible',
-            //     // The "box-sizing" must be set to "content-box" because we set a fixed height to this element when the sticky sidebar has a fixed position.
-            //     '-webkit-box-sizing': 'border-box',
-            //     '-moz-box-sizing': 'border-box',
-            //     'box-sizing': 'border-box'
-            // };
-
             for (const [key, value] of Object.entries({
                 'position': o.options.defaultPosition,
                 'overflow': 'visible',
@@ -150,13 +141,12 @@ const theiaStickySidebar = (target, options) => {
             o.paddingBottom = parseInt(computedStyle.getPropertyValue('padding-bottom'));
 
             // Add a temporary padding rule to check for collapsable margins.
-            let collapsedTopHeight = o.stickySidebar.offsetTop;
-            let collapsedBottomHeight = o.stickySidebar.offsetHeight;
+            let collapsedTopHeight = o.stickySidebar.getBoundingClientRect().top + window.pageYOffset;
+            let collapsedBottomHeight = o.stickySidebar.getBoundingClientRect().height;
             o.stickySidebar.style.setProperty('padding-top',1);
             o.stickySidebar.style.setProperty('padding-bottom', 1);
-            // razvan look into this https://stackoverflow.com/questions/6139720/pure-javascript-function-similar-to-jquery-offset&#answer-60083373
-            collapsedTopHeight -= o.stickySidebar.offsetTop;
-            collapsedBottomHeight = o.stickySidebar.offsetHeight - collapsedBottomHeight - collapsedTopHeight;
+            collapsedTopHeight -= o.stickySidebar.getBoundingClientRect().top + window.pageYOffset;
+            collapsedBottomHeight = o.stickySidebar.getBoundingClientRect().height - collapsedBottomHeight - collapsedTopHeight;
             if (collapsedTopHeight == 0) {
                 o.stickySidebar.style.setProperty('padding-top', 0);
                 o.stickySidebarPaddingTop = 0;
@@ -207,21 +197,24 @@ const theiaStickySidebar = (target, options) => {
                 let position = 'static';
                 let top = 0;
 
+                // Position of element relative to document = position of element relative to screen + window scrolling position
+                const sidebarOffset = o.sidebar.getBoundingClientRect().top + window.pageYOffset;
+
                 // If the user has scrolled down enough for the sidebar to be clipped at the top, then we can consider changing its position.
-                if (scrollTop >= o.sidebar.offsetTop + (o.paddingTop - o.options.additionalMarginTop)) {
+                if (scrollTop >= sidebarOffset + (o.paddingTop - o.options.additionalMarginTop)) {
                     // The top and bottom offsets, used in various calculations.
                     const offsetTop = o.paddingTop + options.additionalMarginTop;
                     const offsetBottom = o.paddingBottom + o.marginBottom + options.additionalMarginBottom;
 
                     // All top and bottom positions are relative to the window, not to the parent elements.
-                    const containerTop = o.sidebar.offsetTop;
-                    const containerBottom = o.sidebar.offsetTop + getClearedHeight(o.container);
+                    const containerTop = o.sidebar.getBoundingClientRect().top + window.pageYOffset;
+                    const containerBottom = o.sidebar.getBoundingClientRect().top + window.pageYOffset + getClearedHeight(o.container);
 
                     // The top and bottom offsets relative to the window screen top (zero) and bottom (window height).
                     const windowOffsetTop = 0 + options.additionalMarginTop;
                     let windowOffsetBottom;
 
-                    const sidebarSmallerThanWindow = (o.stickySidebar.getBoundingClientRect().width + offsetTop + offsetBottom) < window.innerHeight;
+                    const sidebarSmallerThanWindow = (o.stickySidebar.getBoundingClientRect().height + offsetTop + offsetBottom) < window.innerHeight;
                     if (sidebarSmallerThanWindow) {
                         windowOffsetBottom = windowOffsetTop + o.stickySidebar.getBoundingClientRect().height;
                     } else {
@@ -231,7 +224,7 @@ const theiaStickySidebar = (target, options) => {
                     const staticLimitTop = containerTop - scrollTop + o.paddingTop;
                     const staticLimitBottom = containerBottom - scrollTop - o.paddingBottom - o.marginBottom;
 
-                    top = o.stickySidebar.getBoundingClientRect().top - scrollTop;
+                    top = o.stickySidebar.getBoundingClientRect().top + window.pageYOffset - scrollTop;
                     const scrollTopDiff = o.previousScrollTop - scrollTop;
 
                     // If the sidebar position is fixed, then it won't move up or down by itself. So, we manually adjust the top coordinate.
@@ -260,13 +253,13 @@ const theiaStickySidebar = (target, options) => {
                     top = Math.min(top, staticLimitBottom - o.stickySidebar.getBoundingClientRect().height);
 
                     // If the sidebar is the same height as the container, we won't use fixed positioning.
-                    const sidebarSameHeightAsContainer = o.container.height === o.stickySidebar.getBoundingClientRect().height;
+                    const sidebarSameHeightAsContainer = o.container.getBoundingClientRect().height === o.stickySidebar.getBoundingClientRect().height;
 
                     if (!sidebarSameHeightAsContainer && top == windowOffsetTop) {
                         position = 'fixed';
                     } else if (!sidebarSameHeightAsContainer && top == windowOffsetBottom - o.stickySidebar.getBoundingClientRect().height) {
                         position = 'fixed';
-                    } else if (scrollTop + top - o.sidebar.offsetTop - o.paddingTop <= options.additionalMarginTop) {
+                    } else if (scrollTop + top - (o.sidebar.getBoundingClientRect().top + window.pageYOffset) - o.paddingTop <= options.additionalMarginTop) {
                         // Stuck to the top of the page. No special behavior.
                         position = 'static';
                     } else {
@@ -296,7 +289,7 @@ const theiaStickySidebar = (target, options) => {
 
                     if (o.stickySidebar.style.position !== 'absolute') {
                         css.position = 'absolute';
-                        css.transform = 'translateY(' + (scrollTop + top - o.sidebar.offsetTop - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
+                        css.transform = 'translateY(' + (scrollTop + top - (o.sidebar.getBoundingClientRect().top + window.pageYOffset) - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
                         css.top = '0px';
                     }
 
@@ -312,7 +305,9 @@ const theiaStickySidebar = (target, options) => {
 
                 if (position !== 'static') {
                     if (o.options.updateSidebarHeight === true) {
-                        o.sidebar.style.setProperty('min-height', o.stickySidebar.outerHeight + o.stickySidebar.offsetTop - o.sidebar.offsetTop + o.paddingBottom);
+                        o.sidebar.style.setProperty('min-height', o.stickySidebar.outerHeight +
+                            (o.stickySidebar.getBoundingClientRect().top + window.pageYOffset) -
+                            (o.sidebar.getBoundingClientRect().top + window.pageYOffset) + o.paddingBottom);
                     }
                 }
 
@@ -323,12 +318,12 @@ const theiaStickySidebar = (target, options) => {
             o.onScroll(o);
 
             // Recalculate the sidebar's position on every scroll and resize.
-            document.addEventListener('scroll.' + o.options.namespace, function (o) {
+            document.addEventListener('scroll', function (o) {
                 return function () {
                     o.onScroll(o);
                 };
             }(o));
-            window.addEventListener('resize.' + o.options.namespace, function (o) {
+            window.addEventListener('resize', function (o) {
                 return function () {
                     o.stickySidebar.style.setProperty('position', 'static');
                     o.onScroll(o);
