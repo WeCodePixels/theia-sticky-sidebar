@@ -332,7 +332,7 @@ const theiaStickySidebar = (target, options) => {
 
             // Recalculate the sidebar's position every time the sidebar changes its size.
             if (typeof ResizeSensor !== 'undefined') {
-                new ResizeSensor(o.stickySidebar[0], function (o) {
+                new ResizeSensor(o.stickySidebar, function (o) {
                     return function () {
                         o.onScroll(o);
                     };
@@ -356,8 +356,8 @@ const theiaStickySidebar = (target, options) => {
             function getClearedHeight(e) {
                 let height = e.getBoundingClientRect().height;
 
-                Array.from(e.children).forEach(function () {
-                    height = Math.max(height, element.getBoundingClientRect().height);
+                Array.from(e.children).forEach(child => {
+                    height = Math.max(height, child.getBoundingClientRect().height);
                 });
 
                 return height;
