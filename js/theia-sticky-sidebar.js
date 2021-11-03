@@ -8,6 +8,9 @@
  * Released under the MIT license
  */
 
+import resizeSensor from 'resize-sensor';
+import {theiaEventHandler} from './theiaEventHandler'
+
 const theiaStickySidebar = (target, options) => {
     const defaults = {
         'containerSelector': '',
@@ -35,21 +38,21 @@ const theiaStickySidebar = (target, options) => {
         if (!success) {
             console.log('TSS: Body width smaller than options.minWidth. Init is delayed.');
 
-            document.addEventListener('scroll', function (options, $that) {
-                return function (evt) {
+            theiaEventHandler.addEventListener(document, 'scroll.' + options.namespace, function (options, $that) {
+                return function () {
                     const success = tryInit(options, $that);
 
                     if (success) {
-                        document.removeEventListener('scroll', evt);
+                        theiaEventHandler.removeEventListener(document, 'scroll.' + options.namespace);
                     }
                 };
             }(options, $that));
-            window.addEventListener('resize', function (options, $that) {
-                return function (evt) {
+            theiaEventHandler.addEventListener(window, 'resize.' + options.namespace, function (options, $that) {
+                return function () {
                     const success = tryInit(options, $that);
 
                     if (success) {
-                        window.removeEventListener('resize', evt);
+                        theiaEventHandler.removeEventListener(window, 'resize.' + options.namespace);
                     }
                 };
             }(options, $that))
@@ -331,8 +334,8 @@ const theiaStickySidebar = (target, options) => {
             }(o));
 
             // Recalculate the sidebar's position every time the sidebar changes its size.
-            if (typeof ResizeSensor !== 'undefined') {
-                new ResizeSensor(o.stickySidebar, function (o) {
+            if (typeof resizeSensor !== 'undefined') {
+                new resizeSensor(o.stickySidebar, function (o) {
                     return function () {
                         o.onScroll(o);
                     };
