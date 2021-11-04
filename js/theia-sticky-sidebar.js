@@ -96,7 +96,7 @@ const theiaStickySidebar = (target, options) => {
 
             // Get container
             o.container = o.options.containerSelector === '' ? [] : document.querySelectorAll(o.options.containerSelector);
-            if (o.container.length == 0) {
+            if (o.container.length === 0) {
                 o.container = o.sidebar.parentNode;
             }
 
@@ -146,19 +146,19 @@ const theiaStickySidebar = (target, options) => {
             // Add a temporary padding rule to check for collapsable margins.
             let collapsedTopHeight = o.stickySidebar.getBoundingClientRect().top + window.pageYOffset;
             let collapsedBottomHeight = o.stickySidebar.getBoundingClientRect().height;
-            o.stickySidebar.style.setProperty('padding-top',1);
-            o.stickySidebar.style.setProperty('padding-bottom', 1);
+            o.stickySidebar.style.setProperty('padding-top', '1px');
+            o.stickySidebar.style.setProperty('padding-bottom', '1px');
             collapsedTopHeight -= o.stickySidebar.getBoundingClientRect().top + window.pageYOffset;
             collapsedBottomHeight = o.stickySidebar.getBoundingClientRect().height - collapsedBottomHeight - collapsedTopHeight;
-            if (collapsedTopHeight == 0) {
-                o.stickySidebar.style.setProperty('padding-top', 0);
+            if (collapsedTopHeight === 0) {
+                o.stickySidebar.style.setProperty('padding-top', '0');
                 o.stickySidebarPaddingTop = 0;
             } else {
                 o.stickySidebarPaddingTop = 1;
             }
 
-            if (collapsedBottomHeight == 0) {
-                o.stickySidebar.style.setProperty('padding-bottom', 0);
+            if (collapsedBottomHeight === 0) {
+                o.stickySidebar.style.setProperty('padding-bottom', '0');
                 o.stickySidebarPaddingBottom = 0;
             } else {
                 o.stickySidebarPaddingBottom = 1;
@@ -175,7 +175,7 @@ const theiaStickySidebar = (target, options) => {
 
             o.onScroll = function (o) {
                 // Stop if the sidebar isn't visible.
-                if (o.stickySidebar.style.display === 'none') {
+                if (getComputedStyle(o.stickySidebar).display === 'none') {
                     return;
                 }
 
@@ -187,8 +187,10 @@ const theiaStickySidebar = (target, options) => {
 
                 // Stop if the sidebar width is larger than the container width (e.g. the theme is responsive and the sidebar is now below the content)
                 if (o.options.disableOnResponsiveLayouts) {
-                    // const sidebarWidth = o.sidebar.outerWidth(o.sidebar.style.float === 'none');
-                    const sidebarWidth = o.sidebar.getBoundingClientRect().width;
+                    const sidebarStyles = getComputedStyle(o.sidebar);
+                    const margins = sidebarStyles.float === 'none' ?
+                        parseInt(sidebarStyles.marginLeft) + parseInt(sidebarStyles.marginRight) : 0;
+                    const sidebarWidth = o.sidebar.getBoundingClientRect().width + margins;
 
                     if (sidebarWidth + 50 > o.container.getBoundingClientRect().width) {
                         resetSidebar();
@@ -231,7 +233,7 @@ const theiaStickySidebar = (target, options) => {
                     const scrollTopDiff = o.previousScrollTop - scrollTop;
 
                     // If the sidebar position is fixed, then it won't move up or down by itself. So, we manually adjust the top coordinate.
-                    if (o.stickySidebar.style.position === 'fixed') {
+                    if (getComputedStyle(o.stickySidebar).position === 'fixed') {
                         if (o.options.sidebarBehavior === 'modern') {
                             top += scrollTopDiff;
                         }
@@ -258,9 +260,9 @@ const theiaStickySidebar = (target, options) => {
                     // If the sidebar is the same height as the container, we won't use fixed positioning.
                     const sidebarSameHeightAsContainer = o.container.getBoundingClientRect().height === o.stickySidebar.getBoundingClientRect().height;
 
-                    if (!sidebarSameHeightAsContainer && top == windowOffsetTop) {
+                    if (!sidebarSameHeightAsContainer && top === windowOffsetTop) {
                         position = 'fixed';
-                    } else if (!sidebarSameHeightAsContainer && top == windowOffsetBottom - o.stickySidebar.getBoundingClientRect().height) {
+                    } else if (!sidebarSameHeightAsContainer && top === windowOffsetBottom - o.stickySidebar.getBoundingClientRect().height) {
                         position = 'fixed';
                     } else if (scrollTop + top - (o.sidebar.getBoundingClientRect().top + window.pageYOffset) - o.paddingTop <= options.additionalMarginTop) {
                         // Stuck to the top of the page. No special behavior.
@@ -282,17 +284,18 @@ const theiaStickySidebar = (target, options) => {
                         'position': 'fixed',
                         'width': getWidthForObject(o.stickySidebar) + 'px',
                         'transform': 'translateY(' + top + 'px)',
-                        'left': (o.sidebar.getBoundingClientRect().left + parseInt(o.sidebar.style.paddingLeft) - scrollLeft) + 'px',
-                        'top': '0px'
+                        'left': (o.sidebar.getBoundingClientRect().left + parseInt(getComputedStyle(o.sidebar).paddingLeft) - scrollLeft) + 'px',
+                        'top': '0'
                     })) {
                         o.stickySidebar.style.setProperty(key, value);
                     }
                 } else if (position === 'absolute') {
                     const css = {};
 
-                    if (o.stickySidebar.style.position !== 'absolute') {
+                    if (getComputedStyle(o.stickySidebar).position !== 'absolute') {
                         css.position = 'absolute';
-                        css.transform = 'translateY(' + (scrollTop + top - (o.sidebar.getBoundingClientRect().top + window.pageYOffset) - o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
+                        css.transform = 'translateY(' + (scrollTop + top - (o.sidebar.getBoundingClientRect().top + window.pageYOffset) -
+                            o.stickySidebarPaddingTop - o.stickySidebarPaddingBottom) + 'px)';
                         css.top = '0px';
                     }
 
@@ -310,7 +313,7 @@ const theiaStickySidebar = (target, options) => {
                     if (o.options.updateSidebarHeight === true) {
                         o.sidebar.style.setProperty('min-height', o.stickySidebar.outerHeight +
                             (o.stickySidebar.getBoundingClientRect().top + window.pageYOffset) -
-                            (o.sidebar.getBoundingClientRect().top + window.pageYOffset) + o.paddingBottom);
+                            (o.sidebar.getBoundingClientRect().top + window.pageYOffset) + o.paddingBottom) + 'px';
                     }
                 }
 
