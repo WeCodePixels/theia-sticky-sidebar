@@ -1,3 +1,5 @@
+// Based on https://stackoverflow.com/questions/21817397/event-handler-namespace-in-vanilla-javascript?#answer-44426162
+
 class EventHandlerClass {
     constructor() {
         this.functionMap = {};
