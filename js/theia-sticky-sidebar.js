@@ -19,7 +19,8 @@
             'disableOnResponsiveLayouts': true,
             'sidebarBehavior': 'modern',
             'defaultPosition': 'relative',
-            'namespace': 'TSS'
+            'namespace': 'TSS',
+				'scrollSelector': '',
         };
         options = $.extend(defaults, options);
 
@@ -314,6 +315,15 @@
                         o.onScroll(o);
                     };
                 }(o));
+					 if (o.options.scrollSelector) {
+                    $(window).on('resize.' + o.options.namespace, function (o) {
+							  return function () {
+									o.stickySidebar.css({'position': 'static'});
+									o.onScroll(o);
+							  };
+                    }(o));
+					 }
+					 
 
                 // Recalculate the sidebar's position every time the sidebar changes its size.
                 if (typeof ResizeSensor !== 'undefined') {
