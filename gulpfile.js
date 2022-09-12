@@ -37,9 +37,9 @@ gulp.task('ResizeSensor.min.js', function () {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('default', [
+gulp.task('default', gulp.series(
     'theia-sticky-sidebar.js',
     'theia-sticky-sidebar.min.js',
     'ResizeSensor.js',
     'ResizeSensor.min.js'
-]);
+));

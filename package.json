@@ -15,7 +15,7 @@
     "jquery": ">=1.7.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "gulpjs/gulp#v4.0.0-alpha.3",
     "gulp-sourcemaps": "*",
     "gulp-concat": "*",
     "gulp-uglify": "*",

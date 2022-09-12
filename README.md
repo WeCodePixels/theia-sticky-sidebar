@@ -114,6 +114,10 @@ Try to detect responsive layouts automatically and disable the sticky functional
 
 The sidebar must have a non-static `position`, as the inner sticky-sidebar uses `position: absolute`. Defaults to **relative**.
 
+### scrollSelector
+
+Bind the scroll event to the specified selector and to $(window). Defaults to **''**.
+
 ### namespace
 
 Events are binded using a namespace, so that you may unbind them later on without affecting others. Defaults to **TSS**.
