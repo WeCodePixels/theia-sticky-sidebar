@@ -23,7 +23,7 @@ export declare class TheiaStickySidebar {
     private readonly options;
     private elements;
     private initialized;
-    constructor(options: Options);
+    constructor(options: Partial<Options>);
     private tryInitOrHookIntoEvents;
     private tryDelayedInit;
     private tryInit;

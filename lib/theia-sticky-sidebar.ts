@@ -220,7 +220,7 @@ export class TheiaStickySidebar {
 
                     // All top and bottom positions are relative to the window, not to the parent elemnts.
                     const containerTop = sidebarOffset.top;
-                    const containerBottom = sidebarOffset.top + this.getClearedHeight(o.container);
+                    const containerBottom = getOffset(o.container).top + this.getClearedHeight(o.container);
 
                     // The top and bottom offsets relative to the window screen top (zero) and bottom (window height).
                     const windowOffsetTop = this.options.additionalMarginTop;

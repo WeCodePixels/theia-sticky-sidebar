@@ -15,7 +15,7 @@ class C {
     p(this, "options");
     p(this, "elements");
     p(this, "initialized", !1);
-    i = { ...{
+    const t = { ...{
       elements: "",
       containerSelector: "",
       additionalMarginTop: 0,
@@ -26,7 +26,8 @@ class C {
       sidebarBehavior: "modern",
       defaultPosition: "relative",
       verbose: !1
-    }, ...i }, i.additionalMarginTop = parseInt(i.additionalMarginTop) || 0, i.additionalMarginBottom = parseInt(i.additionalMarginBottom) || 0, this.elements = document.querySelectorAll(i.elements), this.options = i, this.tryInitOrHookIntoEvents();
+    }, ...i };
+    t.additionalMarginTop = parseInt(i.additionalMarginTop) || 0, t.additionalMarginBottom = parseInt(i.additionalMarginBottom) || 0, this.elements = document.querySelectorAll(t.elements), this.options = t, this.tryInitOrHookIntoEvents();
   }
   // Try doing init, otherwise hook into window.resize and document.scroll and try again then.
   tryInitOrHookIntoEvents() {
@@ -55,8 +56,8 @@ class C {
       }
       const g = getComputedStyle(t.sidebar);
       t.marginBottom = parseFloat(g.marginBottom), t.paddingTop = parseFloat(g.paddingTop), t.paddingBottom = parseFloat(g.paddingBottom);
-      let h = l(t.stickySidebar).top, b = t.stickySidebar.offsetHeight;
-      t.stickySidebar.style.paddingTop = "1px", t.stickySidebar.style.paddingBottom = "1px", h -= l(t.stickySidebar).top, b = t.stickySidebar.offsetHeight - b - h, h == 0 ? (t.stickySidebar.style.paddingTop = "0px", t.stickySidebarPaddingTop = 0) : t.stickySidebarPaddingTop = 1, b == 0 ? (t.stickySidebar.style.paddingBottom = "0px", t.stickySidebarPaddingBottom = 0) : t.stickySidebarPaddingBottom = 1, t.previousScrollTop = 0, t.fixedScrollTop = 0, this.resetSidebar(t), t.onScroll = () => {
+      let h = r(t.stickySidebar).top, b = t.stickySidebar.offsetHeight;
+      t.stickySidebar.style.paddingTop = "1px", t.stickySidebar.style.paddingBottom = "1px", h -= r(t.stickySidebar).top, b = t.stickySidebar.offsetHeight - b - h, h == 0 ? (t.stickySidebar.style.paddingTop = "0px", t.stickySidebarPaddingTop = 0) : t.stickySidebarPaddingTop = 1, b == 0 ? (t.stickySidebar.style.paddingBottom = "0px", t.stickySidebarPaddingBottom = 0) : t.stickySidebarPaddingBottom = 1, t.previousScrollTop = 0, t.fixedScrollTop = 0, this.resetSidebar(t), t.onScroll = () => {
         if (!this.isVisible(t.stickySidebar))
           return;
         if (document.body.getBoundingClientRect().width < t.options.minWidth) {
@@ -69,32 +70,32 @@ class C {
         }
         const n = window.scrollY;
         let s = "static";
-        const r = l(t.sidebar);
+        const l = r(t.sidebar);
         let e = 0;
-        if (n >= r.top + (t.paddingTop - t.options.additionalMarginTop)) {
-          const a = t.paddingTop + this.options.additionalMarginTop, S = t.paddingBottom + t.marginBottom + this.options.additionalMarginBottom, u = r.top, k = r.top + this.getClearedHeight(t.container), f = this.options.additionalMarginTop;
+        if (n >= l.top + (t.paddingTop - t.options.additionalMarginTop)) {
+          const a = t.paddingTop + this.options.additionalMarginTop, S = t.paddingBottom + t.marginBottom + this.options.additionalMarginBottom, u = l.top, k = r(t.container).top + this.getClearedHeight(t.container), f = this.options.additionalMarginTop;
           let c;
           t.stickySidebar.offsetHeight + a + S < window.innerHeight ? c = f + t.stickySidebar.offsetHeight : c = window.innerHeight - t.marginBottom - t.paddingBottom - this.options.additionalMarginBottom;
           const B = u - n + t.paddingTop, T = k - n - t.paddingBottom - t.marginBottom;
-          e = l(t.stickySidebar).top - n;
+          e = r(t.stickySidebar).top - n;
           const y = t.previousScrollTop - n;
           getComputedStyle(t.stickySidebar).position === "fixed" && t.options.sidebarBehavior == "modern" && (e += y), t.options.sidebarBehavior == "stick-to-top" && (e = this.options.additionalMarginTop), t.options.sidebarBehavior == "stick-to-bottom" && (e = c - t.stickySidebar.offsetHeight), y > 0 ? e = Math.min(e, f) : e = Math.max(e, c - t.stickySidebar.offsetHeight), e = Math.max(e, B), e = Math.min(e, T - t.stickySidebar.offsetHeight);
           const m = t.container.getBoundingClientRect().height == t.stickySidebar.offsetHeight;
-          !m && e == f || !m && e == c - t.stickySidebar.offsetHeight ? s = "fixed" : n + e - r.top - t.paddingTop <= this.options.additionalMarginTop ? s = "static" : s = "absolute";
+          !m && e == f || !m && e == c - t.stickySidebar.offsetHeight ? s = "fixed" : n + e - l.top - t.paddingTop <= this.options.additionalMarginTop ? s = "static" : s = "absolute";
         }
         if (s == "fixed")
           Object.assign(t.stickySidebar.style, {
             position: "fixed",
             width: t.stickySidebar.getBoundingClientRect().width + "px",
             transform: "translateY(" + e + "px)",
-            left: l(t.sidebar).left + parseFloat(getComputedStyle(t.sidebar).paddingLeft) - window.scrollX + "px",
+            left: r(t.sidebar).left + parseFloat(getComputedStyle(t.sidebar).paddingLeft) - window.scrollX + "px",
             top: "0px"
           });
         else if (s == "absolute") {
           const a = {};
-          getComputedStyle(t.stickySidebar).position !== "absolute" && (a.position = "absolute", a.transform = "translateY(" + (n + e - r.top - t.stickySidebarPaddingTop - t.stickySidebarPaddingBottom) + "px)", a.top = "0px"), a.width = t.stickySidebar.getBoundingClientRect().width + "px", a.left = "", Object.assign(t.stickySidebar.style, a);
+          getComputedStyle(t.stickySidebar).position !== "absolute" && (a.position = "absolute", a.transform = "translateY(" + (n + e - l.top - t.stickySidebarPaddingTop - t.stickySidebarPaddingBottom) + "px)", a.top = "0px"), a.width = t.stickySidebar.getBoundingClientRect().width + "px", a.left = "", Object.assign(t.stickySidebar.style, a);
         } else s == "static" && this.resetSidebar(t);
-        s != "static" && t.options.updateSidebarHeight && (t.sidebar.style.minHeight = t.stickySidebar.offsetHeight + l(t.stickySidebar).top - r.top + t.paddingBottom + "px"), t.previousScrollTop = n;
+        s != "static" && t.options.updateSidebarHeight && (t.sidebar.style.minHeight = t.stickySidebar.offsetHeight + r(t.stickySidebar).top - l.top + t.paddingBottom + "px"), t.previousScrollTop = n;
       }, t.onScroll(), document.addEventListener("scroll", t.onScroll), window.addEventListener("resize", t.onScroll), new ResizeObserver(() => {
         t.onScroll();
       }).observe(t.stickySidebar);
@@ -123,7 +124,7 @@ class C {
     }), o;
   }
 }
-function l(d) {
+function r(d) {
   const i = d.getBoundingClientRect();
   return {
     top: i.top + window.scrollY - document.documentElement.clientTop,
@@ -132,5 +133,5 @@ function l(d) {
 }
 export {
   C as TheiaStickySidebar,
-  l as getOffset
+  r as getOffset
 };
