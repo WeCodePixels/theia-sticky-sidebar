@@ -41,7 +41,7 @@ export class TheiaStickySidebar {
     private elements: NodeListOf<HTMLElement>;
     private initialized: boolean = false;
 
-    public constructor(options: Options) {
+    public constructor(options: Partial<Options>) {
         const defaults: Options = {
             elements: '',
             containerSelector: '',
@@ -54,14 +54,14 @@ export class TheiaStickySidebar {
             defaultPosition: 'relative',
             verbose: false,
         };
-        options = {...defaults, ...options};
+        const finalOptions = {...defaults, ...options};
 
         // Validate options
-        options.additionalMarginTop = parseInt(options.additionalMarginTop as any) || 0;
-        options.additionalMarginBottom = parseInt(options.additionalMarginBottom as any) || 0;
+        finalOptions.additionalMarginTop = parseInt(options.additionalMarginTop as any) || 0;
+        finalOptions.additionalMarginBottom = parseInt(options.additionalMarginBottom as any) || 0;
 
-        this.elements = document.querySelectorAll(options.elements);
-        this.options = options;
+        this.elements = document.querySelectorAll(finalOptions.elements);
+        this.options = finalOptions;
         this.tryInitOrHookIntoEvents();
     }
 
