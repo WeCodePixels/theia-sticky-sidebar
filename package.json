@@ -6,17 +6,11 @@
         "WeCodePixels <contact@wecodepixels.com>"
     ],
     "license": "MIT",
-    "main": "./dist/theia-sticky-sidebar.js",
-    "types": "./dist/theia-sticky-sidebar.d.ts",
+    "main": "dist/theia-sticky-sidebar.js",
+    "types": "dist/theia-sticky-sidebar.d.ts",
     "files": [
         "dist"
     ],
-    "exports": {
-        ".": {
-            "import": "./dist/theia-sticky-sidebar.js",
-            "require": "./dist/theia-sticky-sidebar.umd.cjs"
-        }
-    },
     "repository": {
         "type": "git",
         "url": "https://github.com/WeCodePixels/theia-sticky-sidebar.git"
