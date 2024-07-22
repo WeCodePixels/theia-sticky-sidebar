@@ -3,10 +3,22 @@
     <head>
         <link rel="stylesheet" type="text/css" href="style.css">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/foundation/5.5.3/css/foundation.min.css" rel="stylesheet">
-        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-        <script type="text/javascript" src="../dist/ResizeSensor.js"></script>
-        <script type="text/javascript" src="../dist/theia-sticky-sidebar.js"></script>
-        <script type="text/javascript" src="../js/test.js"></script>
+        <script type="module">
+            import {TheiaStickySidebar} from '/lib/theia-sticky-sidebar.ts';
+            import {testTheiaStickySidebars} from '/lib/test.ts';
+
+            document.addEventListener('DOMContentLoaded', function () {
+                new TheiaStickySidebar({
+                    elements: 'section .columns',
+                    additionalMarginTop: 30
+                });
+            });
+
+            document.querySelector('#start_test').addEventListener('click', element => {
+                element.disabled = true;
+                testTheiaStickySidebars();
+            });
+        </script>
         <style>
             header, footer {
                 margin: 20px 0;
@@ -27,7 +39,7 @@
         <div class="header">
             <h1>Theia Sticky Sidebar - <a href="http://foundation.zurb.com/">Foundation</a> example</h1>
             
-            <button onclick="this.disabled = true; testTheiaStickySidebars();">Run the self-assessment test</button> (May take a while. Be sure to not scroll or resize the window.)
+            <button id="start_test">Run the self-assessment test</button> (May take a while. Be sure to not scroll or resize the window.)
         </div>
         
         <header>
@@ -61,11 +73,5 @@
                 </div>
             </div>
         </footer>
-
-        <script>        
-            $(document).ready(function() {
-                $('section .columns').theiaStickySidebar();
-            });
-        </script>
     </body>
 </html>

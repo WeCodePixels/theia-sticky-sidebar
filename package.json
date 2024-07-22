@@ -1,24 +1,31 @@
 {
-  "name": "theia-sticky-sidebar",
-  "version": "1.7.0",
-  "description": "Glues your website's sidebars, making them permanently visible while scrolling.",
-  "authors": [
-    "WeCodePixels <contact@wecodepixels.com>"
-  ],
-  "license": "MIT",
-  "main": "dist/theia-sticky-sidebar.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/WeCodePixels/theia-sticky-sidebar.git"
-  },
-  "dependencies": {
-    "jquery": ">=1.7.0"
-  },
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-sourcemaps": "*",
-    "gulp-concat": "*",
-    "gulp-uglify": "*",
-    "css-element-queries": "*"
-  }
+    "name": "theia-sticky-sidebar",
+    "version": "2.0.0",
+    "description": "Glues your website's sidebars, making them permanently visible while scrolling.",
+    "authors": [
+        "WeCodePixels <contact@wecodepixels.com>"
+    ],
+    "license": "MIT",
+    "main": "./dist/theia-sticky-sidebar.umd.cjs",
+    "module": "./dist/theia-sticky-sidebar.js",
+    "exports": {
+        ".": {
+            "import": "./dist/theia-sticky-sidebar.js",
+            "require": "./dist/theia-sticky-sidebar.umd.cjs"
+        }
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/WeCodePixels/theia-sticky-sidebar.git"
+    },
+    "type": "module",
+    "scripts": {
+        "dev": "vite",
+        "build": "tsc && vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "typescript": "^5.5.3",
+        "vite": "^5.3.4"
+    }
 }
