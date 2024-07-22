@@ -6,8 +6,11 @@
         "WeCodePixels <contact@wecodepixels.com>"
     ],
     "license": "MIT",
-    "main": "./dist/theia-sticky-sidebar.umd.cjs",
-    "module": "./dist/theia-sticky-sidebar.js",
+    "main": "./dist/theia-sticky-sidebar.js",
+    "types": "./dist/theia-sticky-sidebar.d.ts",
+    "files": [
+        "dist"
+    ],
     "exports": {
         ".": {
             "import": "./dist/theia-sticky-sidebar.js",
@@ -26,6 +29,7 @@
     },
     "devDependencies": {
         "typescript": "^5.5.3",
-        "vite": "^5.3.4"
+        "vite": "^5.3.4",
+        "vite-plugin-dts": "^4.0.0-beta.1"
     }
 }
