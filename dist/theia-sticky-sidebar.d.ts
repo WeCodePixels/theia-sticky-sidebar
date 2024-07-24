@@ -8,7 +8,7 @@
  * Released under the MIT license
  */
 interface Options {
-    elements: string;
+    elements: string | HTMLElement | Array<HTMLElement>;
     containerSelector: string;
     additionalMarginTop: number;
     additionalMarginBottom: number;
@@ -23,7 +23,9 @@ export declare class TheiaStickySidebar {
     private readonly options;
     private elements;
     private initialized;
+    private stickySidebars;
     constructor(options: Partial<Options>);
+    unbind(): void;
     private tryInitOrHookIntoEvents;
     private tryDelayedInit;
     private tryInit;

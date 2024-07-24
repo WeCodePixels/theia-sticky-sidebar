@@ -9,7 +9,7 @@
  */
 
 interface Options {
-    elements: string,
+    elements: string | HTMLElement | Array<HTMLElement>,
     containerSelector: string,
     additionalMarginTop: number,
     additionalMarginBottom: number,
@@ -34,12 +34,14 @@ interface StickySidebar {
     marginBottom: number,
     paddingTop: number,
     paddingBottom: number,
+    resizeObserver: ResizeObserver,
 }
 
 export class TheiaStickySidebar {
     private readonly options: Options;
-    private elements: NodeListOf<HTMLElement>;
+    private elements: Array<HTMLElement>;
     private initialized: boolean = false;
+    private stickySidebars: Array<StickySidebar> = [];
 
     public constructor(options: Partial<Options>) {
         const defaults: Options = {
@@ -60,9 +62,26 @@ export class TheiaStickySidebar {
         finalOptions.additionalMarginTop = parseInt(options.additionalMarginTop as any) || 0;
         finalOptions.additionalMarginBottom = parseInt(options.additionalMarginBottom as any) || 0;
 
-        this.elements = document.querySelectorAll(finalOptions.elements);
+        if (finalOptions.elements instanceof HTMLElement) {
+            this.elements = [finalOptions.elements];
+        } else if (finalOptions.elements instanceof Array) {
+            this.elements = finalOptions.elements
+        } else {
+            this.elements = Array.from(document.querySelectorAll(finalOptions.elements));
+        }
         this.options = finalOptions;
         this.tryInitOrHookIntoEvents();
+    }
+
+    public unbind() {
+        document.removeEventListener('scroll', this.tryDelayedInit);
+        window.removeEventListener('resize', this.tryDelayedInit);
+
+        this.stickySidebars.forEach(o => {
+            document.removeEventListener('scroll', o.onScroll);
+            window.removeEventListener('resize', o.onScroll);
+            o.resizeObserver.disconnect();
+        })
     }
 
     // Try doing init, otherwise hook into window.resize and document.scroll and try again then.
@@ -326,10 +345,12 @@ export class TheiaStickySidebar {
             window.addEventListener('resize', o.onScroll);
 
             // Recalculate the sidebar's position every time the sidebar changes its size.
-            const resizeObserver = new ResizeObserver(() => {
+            o.resizeObserver = new ResizeObserver(() => {
                 o.onScroll();
             });
-            resizeObserver.observe(o.stickySidebar);
+            o.resizeObserver.observe(o.stickySidebar);
+
+            this.stickySidebars.push(o);
         });
     }
 

@@ -1,6 +1,6 @@
 var w = Object.defineProperty;
-var v = (d, i, o) => i in d ? w(d, i, { enumerable: !0, configurable: !0, writable: !0, value: o }) : d[i] = o;
-var p = (d, i, o) => v(d, typeof i != "symbol" ? i + "" : i, o);
+var T = (a, e, o) => e in a ? w(a, e, { enumerable: !0, configurable: !0, writable: !0, value: o }) : a[e] = o;
+var p = (a, e, o) => T(a, typeof e != "symbol" ? e + "" : e, o);
 /*!
  * Theia Sticky Sidebar v2.0.0
  * https://github.com/WeCodePixels/theia-sticky-sidebar
@@ -10,11 +10,12 @@ var p = (d, i, o) => v(d, typeof i != "symbol" ? i + "" : i, o);
  * Copyright 2013-2024 WeCodePixels and other contributors
  * Released under the MIT license
  */
-class C {
-  constructor(i) {
+class M {
+  constructor(e) {
     p(this, "options");
     p(this, "elements");
     p(this, "initialized", !1);
+    p(this, "stickySidebars", []);
     const t = { ...{
       elements: "",
       containerSelector: "",
@@ -26,8 +27,13 @@ class C {
       sidebarBehavior: "modern",
       defaultPosition: "relative",
       verbose: !1
-    }, ...i };
-    t.additionalMarginTop = parseInt(i.additionalMarginTop) || 0, t.additionalMarginBottom = parseInt(i.additionalMarginBottom) || 0, this.elements = document.querySelectorAll(t.elements), this.options = t, this.tryInitOrHookIntoEvents();
+    }, ...e };
+    t.additionalMarginTop = parseInt(e.additionalMarginTop) || 0, t.additionalMarginBottom = parseInt(e.additionalMarginBottom) || 0, t.elements instanceof HTMLElement ? this.elements = [t.elements] : t.elements instanceof Array ? this.elements = t.elements : this.elements = Array.from(document.querySelectorAll(t.elements)), this.options = t, this.tryInitOrHookIntoEvents();
+  }
+  unbind() {
+    document.removeEventListener("scroll", this.tryDelayedInit), window.removeEventListener("resize", this.tryDelayedInit), this.stickySidebars.forEach((e) => {
+      document.removeEventListener("scroll", e.onScroll), window.removeEventListener("resize", e.onScroll), e.resizeObserver.disconnect();
+    });
   }
   // Try doing init, otherwise hook into window.resize and document.scroll and try again then.
   tryInitOrHookIntoEvents() {
@@ -54,10 +60,10 @@ class C {
           (s.type.length === 0 || s.type.match(n)) && s.remove();
         }), t.stickySidebar = document.createElement("div"), t.stickySidebar.classList.add("theiaStickySidebar"), t.stickySidebar.append(...t.sidebar.children), t.sidebar.append(t.stickySidebar);
       }
-      const g = getComputedStyle(t.sidebar);
-      t.marginBottom = parseFloat(g.marginBottom), t.paddingTop = parseFloat(g.paddingTop), t.paddingBottom = parseFloat(g.paddingBottom);
-      let h = r(t.stickySidebar).top, b = t.stickySidebar.offsetHeight;
-      t.stickySidebar.style.paddingTop = "1px", t.stickySidebar.style.paddingBottom = "1px", h -= r(t.stickySidebar).top, b = t.stickySidebar.offsetHeight - b - h, h == 0 ? (t.stickySidebar.style.paddingTop = "0px", t.stickySidebarPaddingTop = 0) : t.stickySidebarPaddingTop = 1, b == 0 ? (t.stickySidebar.style.paddingBottom = "0px", t.stickySidebarPaddingBottom = 0) : t.stickySidebarPaddingBottom = 1, t.previousScrollTop = 0, t.fixedScrollTop = 0, this.resetSidebar(t), t.onScroll = () => {
+      const h = getComputedStyle(t.sidebar);
+      t.marginBottom = parseFloat(h.marginBottom), t.paddingTop = parseFloat(h.paddingTop), t.paddingBottom = parseFloat(h.paddingBottom);
+      let f = d(t.stickySidebar).top, g = t.stickySidebar.offsetHeight;
+      t.stickySidebar.style.paddingTop = "1px", t.stickySidebar.style.paddingBottom = "1px", f -= d(t.stickySidebar).top, g = t.stickySidebar.offsetHeight - g - f, f == 0 ? (t.stickySidebar.style.paddingTop = "0px", t.stickySidebarPaddingTop = 0) : t.stickySidebarPaddingTop = 1, g == 0 ? (t.stickySidebar.style.paddingBottom = "0px", t.stickySidebarPaddingBottom = 0) : t.stickySidebarPaddingBottom = 1, t.previousScrollTop = 0, t.fixedScrollTop = 0, this.resetSidebar(t), t.onScroll = () => {
         if (!this.isVisible(t.stickySidebar))
           return;
         if (document.body.getBoundingClientRect().width < t.options.minWidth) {
@@ -70,68 +76,68 @@ class C {
         }
         const n = window.scrollY;
         let s = "static";
-        const l = r(t.sidebar);
-        let e = 0;
+        const l = d(t.sidebar);
+        let i = 0;
         if (n >= l.top + (t.paddingTop - t.options.additionalMarginTop)) {
-          const a = t.paddingTop + this.options.additionalMarginTop, S = t.paddingBottom + t.marginBottom + this.options.additionalMarginBottom, u = l.top, k = r(t.container).top + this.getClearedHeight(t.container), f = this.options.additionalMarginTop;
+          const r = t.paddingTop + this.options.additionalMarginTop, S = t.paddingBottom + t.marginBottom + this.options.additionalMarginBottom, u = l.top, k = d(t.container).top + this.getClearedHeight(t.container), b = this.options.additionalMarginTop;
           let c;
-          t.stickySidebar.offsetHeight + a + S < window.innerHeight ? c = f + t.stickySidebar.offsetHeight : c = window.innerHeight - t.marginBottom - t.paddingBottom - this.options.additionalMarginBottom;
-          const B = u - n + t.paddingTop, T = k - n - t.paddingBottom - t.marginBottom;
-          e = r(t.stickySidebar).top - n;
+          t.stickySidebar.offsetHeight + r + S < window.innerHeight ? c = b + t.stickySidebar.offsetHeight : c = window.innerHeight - t.marginBottom - t.paddingBottom - this.options.additionalMarginBottom;
+          const v = u - n + t.paddingTop, B = k - n - t.paddingBottom - t.marginBottom;
+          i = d(t.stickySidebar).top - n;
           const y = t.previousScrollTop - n;
-          getComputedStyle(t.stickySidebar).position === "fixed" && t.options.sidebarBehavior == "modern" && (e += y), t.options.sidebarBehavior == "stick-to-top" && (e = this.options.additionalMarginTop), t.options.sidebarBehavior == "stick-to-bottom" && (e = c - t.stickySidebar.offsetHeight), y > 0 ? e = Math.min(e, f) : e = Math.max(e, c - t.stickySidebar.offsetHeight), e = Math.max(e, B), e = Math.min(e, T - t.stickySidebar.offsetHeight);
+          getComputedStyle(t.stickySidebar).position === "fixed" && t.options.sidebarBehavior == "modern" && (i += y), t.options.sidebarBehavior == "stick-to-top" && (i = this.options.additionalMarginTop), t.options.sidebarBehavior == "stick-to-bottom" && (i = c - t.stickySidebar.offsetHeight), y > 0 ? i = Math.min(i, b) : i = Math.max(i, c - t.stickySidebar.offsetHeight), i = Math.max(i, v), i = Math.min(i, B - t.stickySidebar.offsetHeight);
           const m = t.container.getBoundingClientRect().height == t.stickySidebar.offsetHeight;
-          !m && e == f || !m && e == c - t.stickySidebar.offsetHeight ? s = "fixed" : n + e - l.top - t.paddingTop <= this.options.additionalMarginTop ? s = "static" : s = "absolute";
+          !m && i == b || !m && i == c - t.stickySidebar.offsetHeight ? s = "fixed" : n + i - l.top - t.paddingTop <= this.options.additionalMarginTop ? s = "static" : s = "absolute";
         }
         if (s == "fixed")
           Object.assign(t.stickySidebar.style, {
             position: "fixed",
             width: t.stickySidebar.getBoundingClientRect().width + "px",
-            transform: "translateY(" + e + "px)",
-            left: r(t.sidebar).left + parseFloat(getComputedStyle(t.sidebar).paddingLeft) - window.scrollX + "px",
+            transform: "translateY(" + i + "px)",
+            left: d(t.sidebar).left + parseFloat(getComputedStyle(t.sidebar).paddingLeft) - window.scrollX + "px",
             top: "0px"
           });
         else if (s == "absolute") {
-          const a = {};
-          getComputedStyle(t.stickySidebar).position !== "absolute" && (a.position = "absolute", a.transform = "translateY(" + (n + e - l.top - t.stickySidebarPaddingTop - t.stickySidebarPaddingBottom) + "px)", a.top = "0px"), a.width = t.stickySidebar.getBoundingClientRect().width + "px", a.left = "", Object.assign(t.stickySidebar.style, a);
+          const r = {};
+          getComputedStyle(t.stickySidebar).position !== "absolute" && (r.position = "absolute", r.transform = "translateY(" + (n + i - l.top - t.stickySidebarPaddingTop - t.stickySidebarPaddingBottom) + "px)", r.top = "0px"), r.width = t.stickySidebar.getBoundingClientRect().width + "px", r.left = "", Object.assign(t.stickySidebar.style, r);
         } else s == "static" && this.resetSidebar(t);
-        s != "static" && t.options.updateSidebarHeight && (t.sidebar.style.minHeight = t.stickySidebar.offsetHeight + r(t.stickySidebar).top - l.top + t.paddingBottom + "px"), t.previousScrollTop = n;
-      }, t.onScroll(), document.addEventListener("scroll", t.onScroll), window.addEventListener("resize", t.onScroll), new ResizeObserver(() => {
+        s != "static" && t.options.updateSidebarHeight && (t.sidebar.style.minHeight = t.stickySidebar.offsetHeight + d(t.stickySidebar).top - l.top + t.paddingBottom + "px"), t.previousScrollTop = n;
+      }, t.onScroll(), document.addEventListener("scroll", t.onScroll), window.addEventListener("resize", t.onScroll), t.resizeObserver = new ResizeObserver(() => {
         t.onScroll();
-      }).observe(t.stickySidebar);
+      }), t.resizeObserver.observe(t.stickySidebar), this.stickySidebars.push(t);
     });
   }
-  getOuterWidth(i) {
-    const o = getComputedStyle(i);
-    return i.getBoundingClientRect().width + parseFloat(o.marginLeft) + parseFloat(o.marginRight);
+  getOuterWidth(e) {
+    const o = getComputedStyle(e);
+    return e.getBoundingClientRect().width + parseFloat(o.marginLeft) + parseFloat(o.marginRight);
   }
-  isVisible(i) {
-    return !!(i.offsetWidth || i.offsetHeight || i.getClientRects().length);
+  isVisible(e) {
+    return !!(e.offsetWidth || e.offsetHeight || e.getClientRects().length);
   }
   // Reset the sidebar to its default state
-  resetSidebar(i) {
-    i.fixedScrollTop = 0, i.sidebar.style.minHeight = "1px", Object.assign(i.stickySidebar.style, {
+  resetSidebar(e) {
+    e.fixedScrollTop = 0, e.sidebar.style.minHeight = "1px", Object.assign(e.stickySidebar.style, {
       position: "static",
       width: "",
       transform: "none"
     });
   }
   // Get the height of a div as if its floated children were cleared. Note that this function fails if the floats are more than one level deep.
-  getClearedHeight(i) {
-    let o = i.getBoundingClientRect().height;
-    return Array.from(i.children).forEach((t) => {
+  getClearedHeight(e) {
+    let o = e.getBoundingClientRect().height;
+    return Array.from(e.children).forEach((t) => {
       o = Math.max(o, t.getBoundingClientRect().height);
     }), o;
   }
 }
-function r(d) {
-  const i = d.getBoundingClientRect();
+function d(a) {
+  const e = a.getBoundingClientRect();
   return {
-    top: i.top + window.scrollY - document.documentElement.clientTop,
-    left: i.left + window.scrollX - document.documentElement.clientLeft
+    top: e.top + window.scrollY - document.documentElement.clientTop,
+    left: e.left + window.scrollX - document.documentElement.clientLeft
   };
 }
 export {
-  C as TheiaStickySidebar,
-  r as getOffset
+  M as TheiaStickySidebar,
+  d as getOffset
 };
