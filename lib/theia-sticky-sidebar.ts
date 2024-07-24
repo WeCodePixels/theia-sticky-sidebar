@@ -62,12 +62,12 @@ export class TheiaStickySidebar {
         finalOptions.additionalMarginTop = parseInt(options.additionalMarginTop as any) || 0;
         finalOptions.additionalMarginBottom = parseInt(options.additionalMarginBottom as any) || 0;
 
-        if (typeof finalOptions.elements === 'string') {
-            this.elements = Array.from(document.querySelectorAll(finalOptions.elements));
-        } else if (Array.isArray(finalOptions.elements)) {
-            this.elements = finalOptions.elements;
-        } else {
+        if (finalOptions.elements instanceof HTMLElement) {
             this.elements = [finalOptions.elements];
+        } else if (finalOptions.elements instanceof Array) {
+            this.elements = finalOptions.elements
+        } else {
+            this.elements = Array.from(document.querySelectorAll(finalOptions.elements));
         }
         this.options = finalOptions;
         this.tryInitOrHookIntoEvents();
