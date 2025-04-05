@@ -64,6 +64,7 @@ export function testTheiaStickySidebars() {
             window.removeEventListener('scroll', handleScroll);
 
             // Used to notify Playwright.
+            // eslint-disable-next-line
             (window as any).testFinishedSuccessfully = true;
 
             alert("Great success!");
