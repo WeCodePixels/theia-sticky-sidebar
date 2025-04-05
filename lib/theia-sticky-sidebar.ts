@@ -26,7 +26,7 @@ interface StickySidebar {
     sidebar: HTMLElement,
     stickySidebar: HTMLElement,
     container: HTMLElement,
-    onScroll: any,
+    onScroll: () => unknown,
     previousScrollTop: number,
     fixedScrollTop: number,
     stickySidebarPaddingTop: number,
@@ -59,8 +59,8 @@ export class TheiaStickySidebar {
         const finalOptions = {...defaults, ...options};
 
         // Validate options
-        finalOptions.additionalMarginTop = parseInt(options.additionalMarginTop as any) || 0;
-        finalOptions.additionalMarginBottom = parseInt(options.additionalMarginBottom as any) || 0;
+        finalOptions.additionalMarginTop = Math.floor(options.additionalMarginTop || 0);
+        finalOptions.additionalMarginBottom = Math.floor(options.additionalMarginBottom || 0);
 
         if (finalOptions.elements instanceof HTMLElement) {
             this.elements = [finalOptions.elements];
@@ -73,7 +73,7 @@ export class TheiaStickySidebar {
         this.tryInitOrHookIntoEvents();
     }
 
-    public unbind() {
+    public unbind = () => {
         document.removeEventListener('scroll', this.tryDelayedInit);
         window.removeEventListener('resize', this.tryDelayedInit);
 
@@ -82,21 +82,23 @@ export class TheiaStickySidebar {
             window.removeEventListener('resize', o.onScroll);
             o.resizeObserver.disconnect();
         })
-    }
+    };
 
     // Try doing init, otherwise hook into window.resize and document.scroll and try again then.
-    private tryInitOrHookIntoEvents() {
+    private tryInitOrHookIntoEvents = () => {
         const success = this.tryInit();
 
         if (!success) {
-            this.options.verbose && console.log('TSS: Body width smaller than options.minWidth. Init is delayed.');
+            if (this.options.verbose) {
+                console.log('TSS: Body width smaller than options.minWidth. Init is delayed.');
+            }
 
             document.addEventListener('scroll', this.tryDelayedInit);
             window.addEventListener('resize', this.tryDelayedInit);
         }
     }
 
-    private tryDelayedInit() {
+    private tryDelayedInit = () => {
         const success = this.tryInit();
 
         if (success) {

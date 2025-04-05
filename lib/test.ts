@@ -1,16 +1,21 @@
 import {getOffset} from "./theia-sticky-sidebar.ts";
 
 export function testTheiaStickySidebars() {
-    const me: any = {};
-    me.scrollTopStep = 1;
-    me.currentScrollTop = 0;
-    me.values = null;
+    const me: {
+        scrollTopStep: number,
+        currentScrollTop: number,
+        values: null | number[],
+    } = {
+        scrollTopStep: 1,
+        currentScrollTop: 0,
+        values: null,
+    };
 
     window.scrollTo(0, 1);
     window.scrollTo(0, 0);
 
     const handleScroll = () => {
-        const newValues: any = [];
+        const newValues: number[] = [];
 
         // Get sidebar offsets.
         document.querySelectorAll('.theiaStickySidebar').forEach(element => {
@@ -34,7 +39,7 @@ export function testTheiaStickySidebars() {
 
             if (!ok) {
                 // Stop test.
-                window.removeEventListener('scroll',handleScroll);
+                window.removeEventListener('scroll', handleScroll);
 
                 alert('Bummer. Offset difference is bigger than 1px for some sidebars, which will be highlighted in yellow. Check the logs. Aborting.');
 
@@ -57,7 +62,7 @@ export function testTheiaStickySidebars() {
         }
         // Then stop.
         else {
-            window.removeEventListener('scroll',handleScroll);
+            window.removeEventListener('scroll', handleScroll);
 
             alert("Great success!");
         }
