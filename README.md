@@ -1,123 +1,138 @@
 # Theia Sticky Sidebar
 
-A JavaScript library that glues your website's sidebars (or any vertical column for that matter), making them permanently visible when scrolling up and down. Useful when a sidebar is too tall or too short compared to the rest of the content. Works with virtually any design and supports multiple sidebars.
+A lightweight JavaScript (TypeScript) library that glues your website's sidebars (or any vertical column), making them permanently visible when scrolling up and
+down. Useful when a sidebar is too tall or too short compared to the rest of the content. Works with virtually any design and supports multiple sidebars.
 
-## WordPress
+Check out some examples:
 
-[![Theia Sticky Sidebar for WordPress](https://github.com/liviucmg/theia-sticky-sidebar/blob/master/assets/theia-sticky-sidebar-for-wordpress-banner.png)](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/)
-
-Also available as a [premium WordPress plugin](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/) that comes with a user-friendly admin panel and supports a plethora of themes out-of-the-box.
-
-## Examples
-
-[3 columns example](http://theia-sticky-sidebar.wecodepixels.com/examples/3-columns.html)
-
-[4 columns example](http://theia-sticky-sidebar.wecodepixels.com/examples/4-columns.html)
-
-[Bootstrap 4 example](http://theia-sticky-sidebar.wecodepixels.com/examples/bootstrap-v4.html)
-
-[Foundation example](http://theia-sticky-sidebar.wecodepixels.com/examples/foundation.html)
+- [3 columns example](http://theia-sticky-sidebar.wecodepixels.com/examples/3-columns.html)
+- [4 columns example](http://theia-sticky-sidebar.wecodepixels.com/examples/4-columns.html)
+- [Bootstrap 4 example](http://theia-sticky-sidebar.wecodepixels.com/examples/bootstrap-v4.html)
+- [Foundation example](http://theia-sticky-sidebar.wecodepixels.com/examples/foundation.html)
 
 ## Install
 
-### Bower
-
-If you are using Bower as your package manager:
-
-```bash
-bower install theia-sticky-sidebar
-```
-
-### NPM
-
-If you are using NPM as your package manager:
-
-```bash
-npm install theia-sticky-sidebar
-```
+| Package Manager | Install Command                 |
+|-----------------|---------------------------------|
+| NPM             | `npm add theia-sticky-sidebar`  |
+| Yarn            | `yarn add theia-sticky-sidebar` |
+| PNPM            | `pnpm add theia-sticky-sidebar` |
 
 ## Usage
 
 Your website's HTML structure has to be similar to this in order to work:
 
-```html
-<div class="wrapper">
-  <div class="content">
-    <div class="theiaStickySidebar">
-    ...
+```js
+<div>
+    <div class="content">
+        <div class="theiaStickySidebar">
+            ...
+        </div>
     </div>
-  </div>
-  <div class="sidebar">
-    <div class="theiaStickySidebar">
-    ...
+    <div class="sidebar">
+        <div class="theiaStickySidebar">
+            ...
+        </div>
     </div>
-  </div>
 </div>
 ```
 
-Note that the inner "theiaStickySidebar" divs are optional, but highly recommended.
-If you don't supply them yourself, the script will create them for you, but this can be problematic
-if you're using ads or iframes, since they will be moved around in the DOM and as a result will get reloaded.
+Note that the inner `theiaStickySidebar` divs are optional, but highly recommended.
+If you don't supply them yourself, they will be created for you, but this can be problematic:
+ads or iframes will be moved around and may be loaded twice.
 
-**Note:** Make sure to use `<!DOCTYPE html>` in your page, otherwise you might run into weird issues.
+For the above example, you can use the following code:
 
-For the above example, you can use the following JavaScript:
+### JavaScript
 
-```html
-<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-<script type="text/javascript" src="dist/ResizeSensor.min.js"></script>
-<script type="text/javascript" src="dist/theia-sticky-sidebar.min.js"></script>
-		
-<script type="text/javascript">
-  jQuery(document).ready(function() {
-    jQuery('.content, .sidebar').theiaStickySidebar({
-      // Settings
-      additionalMarginTop: 30
+```js
+<script src="dist/theia-sticky-sidebar.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const tss = new TheiaStickySidebar({
+            elements: '.content, .sidebar',
+            additionalMarginTop: 30
+        });
     });
-  });
 </script>
 ```
 
-### ResizeSensor
+### TypeScript
 
-Theia Sticky Sidebar uses the [CSS Element Queries](https://github.com/marcj/css-element-queries) library to detect when your sidebars change height, so that it can recalculate their positions. This can happen if you are using an [accordion](http://v4-alpha.getbootstrap.com/components/collapse/#accordion-example), for example.
+```ts
+import {TheiaStickySidebar} from "theia-sticky-sidebar/dist/theia-sticky-sidebar";
 
-You can choose **not** to include the `ResizeSensor.min.js` script in your page, in which case Theia Sticky Sidebar will continue to function (possibly even a bit smoother) but will not automatically detect height changes.
+document.addEventListener('DOMContentLoaded', function () {
+    const tss = new TheiaStickySidebar({
+        elements: '.content, .sidebar',
+        additionalMarginTop: 30
+    });
+});
+```
+
+### React
+
+This example uses just one sidebar.
+
+```tsx
+import React, {useEffect, useRef} from "react";
+import {TheiaStickySidebar} from "theia-sticky-sidebar/dist/theia-sticky-sidebar";
+
+export const MyComponent = () => {
+    const sidebarRef = useRef<HTMLDivElement>(null);
+    const theiaStickySidebarRef = useRef<TheiaStickySidebar>();
+
+    useEffect(() => {
+        // Activate sticky sidebar once the component is mounted.
+        theiaStickySidebarRef.current = new TheiaStickySidebar({
+            elements: sidebarRef.current!,
+            additionalMarginTop: 30
+        });
+
+        // Gracefully remove the sidebar once the component is unmounted.
+        return () => {
+            theiaStickySidebarRef.current!.unbind();
+        };
+    }, []);
+
+    return <div>
+        <div class="content">
+            ...
+        </div>
+        <div class="sidebar" ref={sidebarRef}>
+            <div class="theiaStickySidebar">
+                ...
+            </div>
+        </div>
+    </div>
+}
+```
 
 ## Settings
 
-### containerSelector
+| Setting                      | Type                                          | Description                                                                                                                                                                                                                                                      |
+|------------------------------|-----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `elements`                   | `string \| HTMLElement \| Array<HTMLElement>` | Required. Can be a simple string selector, like `.my-sidebar`, or `.my-sidebar-1, .my-sidebar-2`. Or, it can be a DOM element, like `document.querySelector('.my-sidebar')`. Or, it can be an array of DOM elements.                                             |
+| `containerSelector`          | `string`                                      | Selector for the sidebar's container element. If not specified, it defaults to the sidebar's parent.                                                                                                                                                             |
+| `additionalMarginTop`        | `number`                                      | An additional top margin in pixels. Defaults to **0**.                                                                                                                                                                                                           |
+| `additionalMarginBottom`     | `number`                                      | An additional bottom margin in pixels. Defaults to **0**.                                                                                                                                                                                                        |
+| `updateSidebarHeight`        | `boolean`                                     | Updates the sidebar's height. Use this if the background isn't showing properly, for example. Defaults to **true**.                                                                                                                                              |
+| `minWidth`                   | `number`                                      | The sidebar returns to normal if its width is below this value. Useful for responsive designs. Defaults to **0**.                                                                                                                                                |
+| `disableOnResponsiveLayouts` | `boolean`                                     | Try to detect responsive layouts automatically and disable the sticky functionality on smaller screens. More exactly, it detects when the container and the sidebar are moved one on top of the other, instead of showing up side-by-side. Defaults to **true**. |
+| `defaultPosition`            | `string`                                      | The sidebar must have a non-static `position`, as the inner sticky-sidebar uses `position: absolute`. Defaults to **relative**.                                                                                                                                  |
 
-The sidebar's container element. If not specified, it defaults to the sidebar's parent.
+## Development
 
-### additionalMarginTop
+If you want to work on this repository:
 
-An additional top margin in pixels. Defaults to **0**.
+```bash
+npm run dev
+```
 
-### additionalMarginBottom
+## WordPress
 
-An additional bottom margin in pixels. Defaults to **0**.
+[![Theia Sticky Sidebar for WordPress](https://github.com/liviucmg/theia-sticky-sidebar/blob/master/assets/theia-sticky-sidebar-for-wordpress-banner.png)](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/)
 
-### updateSidebarHeight
-
-Updates the sidebar's height. Use this if the background isn't showing properly, for example. Defaults to **true**.
-
-### minWidth
-
-The sidebar returns to normal if its width is below this value. Useful for responsive designs. Defaults to **0**.
-
-### disableOnResponsiveLayouts
-
-Try to detect responsive layouts automatically and disable the sticky functionality on smaller screens. More exactly, it detects when the container and the sidebar are moved one on top of the other, instead of showing up side-by-side. Defaults to **true**.
-
-### defaultPosition
-
-The sidebar must have a non-static `position`, as the inner sticky-sidebar uses `position: absolute`. Defaults to **relative**.
-
-### namespace
-
-Events are binded using a namespace, so that you may unbind them later on without affecting others. Defaults to **TSS**.
-
-## Credits
-
-Stock photos courtesy of [Unsplash.com](https://unsplash.com/)
+Also available as a [premium WordPress plugin](https://wecodepixels.com/shop/theia-sticky-sidebar-for-wordpress/) that comes with a user-friendly admin panel
+and supports a plethora of themes out-of-the-box.

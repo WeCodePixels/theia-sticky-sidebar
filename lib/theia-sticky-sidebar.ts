@@ -4,7 +4,7 @@
  *
  * Glues your website's sidebars, making them permanently visible while scrolling.
  *
- * Copyright 2013-2024 WeCodePixels and other contributors
+ * Copyright 2013-2025 WeCodePixels and other contributors
  * Released under the MIT license
  */
 

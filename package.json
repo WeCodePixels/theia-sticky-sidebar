@@ -9,7 +9,11 @@
     "main": "dist/theia-sticky-sidebar.js",
     "types": "dist/theia-sticky-sidebar.d.ts",
     "files": [
-        "dist"
+        "dist",
+        "package.json",
+        "README.md",
+        "LICENSE.txt",
+        "CHANGELOG.md"
     ],
     "repository": {
         "type": "git",
@@ -19,7 +23,6 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "preview": "vite preview"
     },
     "devDependencies": {
         "typescript": "^5.5.3",
