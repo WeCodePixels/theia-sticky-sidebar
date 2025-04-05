@@ -30,7 +30,7 @@ export function testTheiaStickySidebars() {
                 if (diff > 1) {
                     ok = false;
 
-                    console.log('Offset difference for sidebar #' + (j + 1) + ' is ' + diff + 'px');
+                    console.error('Offset difference for sidebar #' + (j + 1) + ' is ' + diff + 'px');
 
                     // Highlight sidebar.
                     (document.querySelectorAll('.theiaStickySidebar')[j] as HTMLElement).style.background = 'yellow';
@@ -40,10 +40,9 @@ export function testTheiaStickySidebars() {
             if (!ok) {
                 // Stop test.
                 window.removeEventListener('scroll', handleScroll);
-
-                alert('Bummer. Offset difference is bigger than 1px for some sidebars, which will be highlighted in yellow. Check the logs. Aborting.');
-
-                return;
+                const msg = 'Bummer. Offset difference is bigger than 1px for some sidebars, which will be highlighted in yellow. Check the logs. Aborting.';
+                alert(msg);
+                throw new Error(msg);
             }
         }
 
@@ -63,6 +62,9 @@ export function testTheiaStickySidebars() {
         // Then stop.
         else {
             window.removeEventListener('scroll', handleScroll);
+
+            // Used to notify Playwright.
+            (window as any).testFinishedSuccessfully = true;
 
             alert("Great success!");
         }

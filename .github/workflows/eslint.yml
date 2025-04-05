@@ -1,5 +1,7 @@
-name: CI
-on: push
+name: ESLint
+on:
+    push:
+    pull_request:
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -7,7 +9,7 @@ jobs:
             -   uses: actions/checkout@v4
 
             -   name: Install modules
-                run: npm install
+                run: npm ci
 
             -   name: Run ESLint
                 run: npm run lint
