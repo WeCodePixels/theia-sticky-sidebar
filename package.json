@@ -23,8 +23,8 @@
     "scripts": {
         "dev": "vite",
         "build": "tsc && vite build",
-        "lint": "eslint",
-        "lint:fix": "eslint --fix"
+        "lint": "eslint lib",
+        "lint:fix": "eslint --fix lib"
     },
     "devDependencies": {
         "@eslint/js": "^9.24.0",
