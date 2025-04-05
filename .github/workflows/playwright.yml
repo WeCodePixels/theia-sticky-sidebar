@@ -1,6 +1,9 @@
 name: Playwright Tests
 on:
     pull_request:
+concurrency:
+    group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+    cancel-in-progress: true
 jobs:
     test:
         timeout-minutes: 5
@@ -16,7 +19,7 @@ jobs:
               run: npm ci
 
             - name: Install Playwright Browsers
-              run: npx playwright install --with-deps
+              run: npx playwright install chromium firefox --with-deps
 
             - name: Run Playwright tests
               run: npx playwright test
