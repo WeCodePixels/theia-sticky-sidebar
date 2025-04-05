@@ -9,6 +9,8 @@ export default defineConfig({
             formats: ['es', 'umd'],
             fileName: (format) => `theia-sticky-sidebar.${format}.js`
         },
+        sourcemap: true,
+        emptyOutDir: true,
     },
     plugins: [dts({include: 'lib/theia-sticky-sidebar.ts'})],
 })

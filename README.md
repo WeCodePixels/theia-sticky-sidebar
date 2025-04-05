@@ -127,6 +127,7 @@ export const MyComponent = () => {
 If you want to work on this repository:
 
 ```bash
+npm install
 npm run dev
 ```
 
