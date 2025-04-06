@@ -3,7 +3,7 @@ name: SonarQube
 on:
     workflow_run:
         workflows: [ "Playwright Tests" ]
-        branches: '**'
+        branches: '*'
         types:
             - completed
 
