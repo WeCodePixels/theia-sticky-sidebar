@@ -16,3 +16,6 @@ jobs:
                     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                 with:
                     projectBaseDir: lib
+                    args: >
+                        -Dsonar.projectKey=WeCodePixels_theia-sticky-sidebar
+                        -Dsonar.organization=wecodepixels
