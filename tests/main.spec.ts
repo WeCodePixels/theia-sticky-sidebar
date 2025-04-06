@@ -3,10 +3,10 @@ import fs from 'fs';
 import path from 'path';
 
 const urls = [
-    '3-columns',
-    '4-columns',
+    // '3-columns',
+    // '4-columns',
     'bootstrap-v4',
-    'foundation'
+    // 'foundation'
 ];
 
 for (const url of urls) {

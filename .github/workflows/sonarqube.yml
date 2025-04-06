@@ -2,8 +2,9 @@ name: SonarQube
 
 on:
     workflow_run:
-        workflows: ["Playwright Tests"]
-        branches: [main]
+        workflows: [ "Playwright Tests" ]
+        types:
+            - completed
 
 jobs:
     sonarQubeScan:
@@ -15,8 +16,9 @@ jobs:
                     fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
             -   name: Download coverage report
-                uses: actions/download-artifact@v4
+                uses: dawidd6/action-download-artifact@v3
                 with:
+                    workflow: playwright.yml
                     name: coverage-report
                     path: coverage
 
