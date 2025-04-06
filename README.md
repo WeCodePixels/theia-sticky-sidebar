@@ -11,8 +11,7 @@ Check out some examples:
 - [Foundation example](http://theia-sticky-sidebar.wecodepixels.com/examples/foundation.html)
 
 ![ESLint](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/eslint.yml/badge.svg)
-![Playwright](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/playwright.yml/badge.svg)
-![SonarQube](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/sonarqube.yml/badge.svg)
+![Playwright and SonarQube](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/playwright.yml/badge.svg)
 
 ## Install
 
