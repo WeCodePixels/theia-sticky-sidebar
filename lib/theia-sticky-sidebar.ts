@@ -19,6 +19,7 @@ interface Options {
     sidebarBehavior: string,
     defaultPosition: string,
     verbose: boolean,
+    requestAnimationFrame: boolean,
 }
 
 interface StickySidebar {
@@ -35,10 +36,11 @@ interface StickySidebar {
     paddingTop: number,
     paddingBottom: number,
     resizeObserver: ResizeObserver,
+    queuedForAnimationFrame: boolean,
 }
 
 export class TheiaStickySidebar {
-    private readonly options: Options;
+    public options: Options;
     private elements: Array<HTMLElement>;
     private initialized: boolean = false;
     private stickySidebars: Array<StickySidebar> = [];
@@ -55,6 +57,7 @@ export class TheiaStickySidebar {
             sidebarBehavior: 'modern',
             defaultPosition: 'relative',
             verbose: false,
+            requestAnimationFrame: true,
         };
         const finalOptions = {...defaults, ...options};
 
@@ -206,7 +209,7 @@ export class TheiaStickySidebar {
             // Set sidebar to default values.
             this.resetSidebar(o);
 
-            o.onScroll = () => {
+            const f = () => {
                 // Stop if the sidebar isn't visible.
                 if (!this.isVisible(o.stickySidebar)) {
                     return;
@@ -337,6 +340,20 @@ export class TheiaStickySidebar {
                 }
 
                 o.previousScrollTop = scrollTop;
+            };
+            o.onScroll = () => {
+                if (o.options.requestAnimationFrame) {
+                    // Throttle/debounce our scroll handler.
+                    if (!o.queuedForAnimationFrame) {
+                        o.queuedForAnimationFrame = true;
+                        window.requestAnimationFrame(() => {
+                            f();
+                            o.queuedForAnimationFrame = false;
+                        });
+                    }
+                } else {
+                    f();
+                }
             };
 
             // Initialize the sidebar's position.
