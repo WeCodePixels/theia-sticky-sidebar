@@ -55,12 +55,15 @@ jobs:
                     name: coverage-report
                     path: coverage
 
+            -   name: Check artifact
+                run: ls -la coverage
+
             -   name: SonarQube Scan
                 uses: SonarSource/sonarqube-scan-action@v4
                 env:
                     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                 with:
-                    projectBaseDir: lib
+                    sources: lib
                     args: >
                         -Dsonar.projectKey=WeCodePixels_theia-sticky-sidebar
                         -Dsonar.organization=wecodepixels
