@@ -10,6 +10,10 @@ Check out some examples:
 - [Bootstrap 4 example](http://theia-sticky-sidebar.wecodepixels.com/examples/bootstrap-v4.html)
 - [Foundation example](http://theia-sticky-sidebar.wecodepixels.com/examples/foundation.html)
 
+![ESLint](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/eslint.yml/badge.svg)
+![Playwright](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/playwright.yml/badge.svg)
+![SonarQube](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/sonarqube.yml/badge.svg)
+
 ## Install
 
 | Package Manager | Install Command                 |
