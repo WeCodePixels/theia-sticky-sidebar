@@ -4,8 +4,6 @@ on:
     workflow_run:
         workflows: ["Playwright Tests"]
         branches: [main]
-        types:
-            - completed
 
 jobs:
     sonarQubeScan:

@@ -22,7 +22,7 @@ jobs:
                 run: npx playwright install chromium --with-deps
 
             -   name: Run Playwright tests
-                run: VITE_COVERAGE=true nyc npx playwright test
+                run: VITE_COVERAGE=true npx playwright test
 
             -   name: Save code coverage results
                 run: npx nyc report --reporter=lcov
