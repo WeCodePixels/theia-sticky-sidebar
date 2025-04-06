@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Tests and SonarQube
 on:
     pull_request:
 concurrency:
@@ -40,3 +40,26 @@ jobs:
                     name: coverage-report
                     path: coverage/
                     retention-days: 7
+
+    sonarqube:
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v4
+                with:
+                    fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
+            -   name: Download coverage report
+                uses: actions/download-artifact@v4
+                with:
+                    name: coverage-report
+                    path: coverage
+
+            -   name: SonarQube Scan
+                uses: SonarSource/sonarqube-scan-action@v4
+                env:
+                    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+                with:
+                    projectBaseDir: lib
+                    args: >
+                        -Dsonar.projectKey=WeCodePixels_theia-sticky-sidebar
+                        -Dsonar.organization=wecodepixels
