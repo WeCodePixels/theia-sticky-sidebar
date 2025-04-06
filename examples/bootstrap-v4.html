@@ -10,8 +10,10 @@
             import {TheiaStickySidebar} from '/lib/theia-sticky-sidebar.ts';
             import {testTheiaStickySidebars} from '/lib/test.ts';
 
+            let tss;
+
             document.addEventListener('DOMContentLoaded', function () {
-                new TheiaStickySidebar({
+                tss = new TheiaStickySidebar({
                     elements: 'section.container .col-md-4',
                     additionalMarginTop: 30
                 });
@@ -19,7 +21,7 @@
 
             document.querySelector('#start_test').addEventListener('click', element => {
                 element.disabled = true;
-                testTheiaStickySidebars();
+                testTheiaStickySidebars(tss);
             });
         </script>
         

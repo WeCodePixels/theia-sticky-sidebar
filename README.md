@@ -11,8 +11,7 @@ Check out some examples:
 - [Foundation example](http://theia-sticky-sidebar.wecodepixels.com/examples/foundation.html)
 
 ![ESLint](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/eslint.yml/badge.svg)
-![Playwright](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/playwright.yml/badge.svg)
-![SonarQube](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/sonarqube.yml/badge.svg)
+![Playwright and SonarQube](https://github.com/WeCodePixels/theia-sticky-sidebar/actions/workflows/playwright.yml/badge.svg)
 
 ## Install
 
@@ -26,7 +25,7 @@ Check out some examples:
 
 Your website's HTML structure has to be similar to this in order to work:
 
-```js
+```html
 <div>
     <div class="content">
         <div class="theiaStickySidebar">
@@ -49,7 +48,7 @@ For the above example, you can use the following code:
 
 ### JavaScript
 
-```js
+```html
 <script src="dist/theia-sticky-sidebar.min.js"></script>
 
 <script>
@@ -125,6 +124,7 @@ export const MyComponent = () => {
 | `minWidth`                   | `number`                                      | The sidebar returns to normal if its width is below this value. Useful for responsive designs. Defaults to **0**.                                                                                                                                                |
 | `disableOnResponsiveLayouts` | `boolean`                                     | Try to detect responsive layouts automatically and disable the sticky functionality on smaller screens. More exactly, it detects when the container and the sidebar are moved one on top of the other, instead of showing up side-by-side. Defaults to **true**. |
 | `defaultPosition`            | `string`                                      | The sidebar must have a non-static `position`, as the inner sticky-sidebar uses `position: absolute`. Defaults to **relative**.                                                                                                                                  |
+| `requestAnimationFrame`      | `boolean`                                     | Improve performance by throttling/debouncing multiple scrolling events using `window.requestAnimationFrame`. Defaults to **true**.                                                                                                                               |
 
 ## Development
 

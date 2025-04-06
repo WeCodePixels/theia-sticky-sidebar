@@ -1,4 +1,6 @@
 import {test} from '@playwright/test';
+import fs from 'fs';
+import path from 'path';
 
 const urls = [
     '3-columns',
@@ -23,3 +25,19 @@ for (const url of urls) {
         await page.waitForFunction(() => (window as any).testFinishedSuccessfully === true);
     });
 }
+
+test.afterEach(async ({page}) => {
+    // Extract coverage data from the browser
+    const coverage = await page.evaluate(() => window.__coverage__);
+
+    // Ensure directory exists
+    const dir = '.nyc_output';
+    if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir);
+    }
+
+    // Save coverage data with a unique filename for each test
+    // This helps when running tests in parallel
+    const id = `playwright-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    fs.writeFileSync(path.join(dir, `coverage-${id}.json`), JSON.stringify(coverage));
+});

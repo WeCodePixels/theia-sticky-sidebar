@@ -23,6 +23,7 @@
         "noFallthroughCasesInSwitch": true
     },
     "include": [
-        "lib"
+        "lib",
+        "tests"
     ]
 }
