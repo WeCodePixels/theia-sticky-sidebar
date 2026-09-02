@@ -6,8 +6,36 @@
         "Liviu Mirea <liviu.mirea@wecodepixels.com>"
     ],
     "license": "MIT",
-    "main": "dist/theia-sticky-sidebar.js",
-    "types": "dist/theia-sticky-sidebar.d.ts",
+    "main": "./dist/theia-sticky-sidebar.umd.cjs",
+    "module": "./dist/theia-sticky-sidebar.es.js",
+    "types": "./dist/theia-sticky-sidebar.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/theia-sticky-sidebar.d.ts",
+                "default": "./dist/theia-sticky-sidebar.es.js"
+            },
+            "require": {
+                "types": "./dist/theia-sticky-sidebar.d.cts",
+                "default": "./dist/theia-sticky-sidebar.umd.cjs"
+            },
+            "default": "./dist/theia-sticky-sidebar.es.js"
+        },
+        "./dist/theia-sticky-sidebar": {
+            "import": {
+                "types": "./dist/theia-sticky-sidebar.d.ts",
+                "default": "./dist/theia-sticky-sidebar.es.js"
+            },
+            "require": {
+                "types": "./dist/theia-sticky-sidebar.d.cts",
+                "default": "./dist/theia-sticky-sidebar.umd.cjs"
+            },
+            "default": "./dist/theia-sticky-sidebar.es.js"
+        },
+        "./dist/theia-sticky-sidebar.umd.js": null,
+        "./dist/*": "./dist/*",
+        "./package.json": "./package.json"
+    },
     "files": [
         "/dist",
         "/package.json",
@@ -22,7 +50,10 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "tsc && vite build",
+        "build": "tsc && vite build && npm run build:cjs-types && npm run build:umd-alias",
+        "build:cjs-types": "node -e \"require('fs').copyFileSync('dist/theia-sticky-sidebar.d.ts', 'dist/theia-sticky-sidebar.d.cts')\"",
+        "build:umd-alias": "node -e \"require('fs').copyFileSync('dist/theia-sticky-sidebar.umd.cjs', 'dist/theia-sticky-sidebar.umd.js')\"",
+        "prepublishOnly": "npm run build",
         "lint": "eslint lib",
         "lint:fix": "eslint --fix lib"
     },

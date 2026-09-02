@@ -28,7 +28,7 @@ for (const url of urls) {
 
 test.afterEach(async ({page}) => {
     // Extract coverage data from the browser
-    const coverage = await page.evaluate(() => window.__coverage__);
+    const coverage = await page.evaluate(() => (window as any).__coverage__);
 
     // Ensure directory exists
     const dir = '.nyc_output';

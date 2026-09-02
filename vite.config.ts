@@ -8,7 +8,7 @@ export default defineConfig({
             entry: 'lib/theia-sticky-sidebar.ts',
             name: 'TheiaStickySidebar',
             formats: ['es', 'umd'],
-            fileName: (format) => `theia-sticky-sidebar.${format}.js`
+            fileName: (format) => `theia-sticky-sidebar.${format}.${format === 'umd' ? 'cjs' : 'js'}`
         },
         sourcemap: true,
         emptyOutDir: true,
