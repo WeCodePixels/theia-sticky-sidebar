@@ -1,6 +1,9 @@
 name: Playwright Tests and SonarQube
 on:
     pull_request:
+    schedule:
+        -   cron: '0 3 * * 0'
+    workflow_dispatch:
 concurrency:
     group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
     cancel-in-progress: true
@@ -9,9 +12,9 @@ jobs:
         timeout-minutes: 5
         runs-on: ubuntu-latest
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v5
 
-            -   uses: actions/setup-node@v4
+            -   uses: actions/setup-node@v5
                 with:
                     node-version: lts/*
 
@@ -27,14 +30,14 @@ jobs:
             -   name: Save code coverage results
                 run: npx nyc report --reporter=lcov
 
-            -   uses: actions/upload-artifact@v4
+            -   uses: actions/upload-artifact@v5
                 if: ${{ !cancelled() }}
                 with:
                     name: playwright-report
                     path: playwright-report/
                     retention-days: 7
 
-            -   uses: actions/upload-artifact@v4
+            -   uses: actions/upload-artifact@v5
                 if: ${{ !cancelled() }}
                 with:
                     name: coverage-report
@@ -45,18 +48,18 @@ jobs:
         runs-on: ubuntu-latest
         needs: [ 'playwright' ]
         steps:
-            -   uses: actions/checkout@v4
+            -   uses: actions/checkout@v5
                 with:
                     fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
             -   name: Download coverage report
-                uses: actions/download-artifact@v4
+                uses: actions/download-artifact@v5
                 with:
                     name: coverage-report
                     path: coverage
 
             -   name: SonarQube Scan
-                uses: SonarSource/sonarqube-scan-action@v4
+                uses: SonarSource/sonarqube-scan-action@v6
                 env:
                     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
                 with:

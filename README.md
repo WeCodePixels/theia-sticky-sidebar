@@ -48,8 +48,8 @@ For the above example, you can use the following code:
 
 ### JavaScript
 
-```js
-<script src="dist/theia-sticky-sidebar.min.js"></script>
+```html
+<script src="node_modules/theia-sticky-sidebar/dist/theia-sticky-sidebar.umd.js"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -64,7 +64,7 @@ For the above example, you can use the following code:
 ### TypeScript
 
 ```ts
-import {TheiaStickySidebar} from "theia-sticky-sidebar/dist/theia-sticky-sidebar";
+import {TheiaStickySidebar} from "theia-sticky-sidebar";
 
 document.addEventListener('DOMContentLoaded', function () {
     const tss = new TheiaStickySidebar({
@@ -80,7 +80,7 @@ This example uses just one sidebar.
 
 ```tsx
 import React, {useEffect, useRef} from "react";
-import {TheiaStickySidebar} from "theia-sticky-sidebar/dist/theia-sticky-sidebar";
+import {TheiaStickySidebar} from "theia-sticky-sidebar";
 
 export const MyComponent = () => {
     const sidebarRef = useRef<HTMLDivElement>(null);
