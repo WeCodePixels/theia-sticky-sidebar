@@ -1,6 +1,6 @@
 {
     "name": "theia-sticky-sidebar",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "description": "Glues your website's sidebars, making them permanently visible while scrolling.",
     "authors": [
         "Liviu Mirea <liviu.mirea@wecodepixels.com>"
