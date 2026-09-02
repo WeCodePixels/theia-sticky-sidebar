@@ -19,7 +19,7 @@ interface Options {
     sidebarBehavior: string,
     defaultPosition: string,
     verbose: boolean,
-    requestAnimationFrame: boolean,
+    enableRequestAnimationFrame: boolean,
 }
 
 interface StickySidebar {
@@ -36,11 +36,11 @@ interface StickySidebar {
     paddingTop: number,
     paddingBottom: number,
     resizeObserver: ResizeObserver,
-    queuedForAnimationFrame: boolean,
+    queuedAnimationFrame: number,
 }
 
 export class TheiaStickySidebar {
-    public options: Options;
+    private readonly options: Options;
     private elements: Array<HTMLElement>;
     private initialized: boolean = false;
     private stickySidebars: Array<StickySidebar> = [];
@@ -57,7 +57,7 @@ export class TheiaStickySidebar {
             sidebarBehavior: 'modern',
             defaultPosition: 'relative',
             verbose: false,
-            requestAnimationFrame: true,
+            enableRequestAnimationFrame: true,
         };
         const finalOptions = {...defaults, ...options};
 
@@ -84,6 +84,11 @@ export class TheiaStickySidebar {
             document.removeEventListener('scroll', o.onScroll);
             window.removeEventListener('resize', o.onScroll);
             o.resizeObserver.disconnect();
+
+            if (o.queuedAnimationFrame) {
+                cancelAnimationFrame(o.queuedAnimationFrame);
+                o.queuedAnimationFrame = 0;
+            }
         })
     };
 
@@ -206,17 +211,20 @@ export class TheiaStickySidebar {
             // Scroll top (value) when the sidebar has fixed position.
             o.fixedScrollTop = 0;
 
+            // The handle of the pending animation frame, if any.
+            o.queuedAnimationFrame = 0;
+
             // Set sidebar to default values.
             this.resetSidebar(o);
 
             o.onScroll = () => {
-                if (o.options.requestAnimationFrame) {
+                if (o.options.enableRequestAnimationFrame) {
                     // Throttle/debounce our scroll handler.
-                    if (!o.queuedForAnimationFrame) {
-                        o.queuedForAnimationFrame = true;
-                        window.requestAnimationFrame(() => {
+                    if (!o.queuedAnimationFrame) {
+                        o.queuedAnimationFrame = window.requestAnimationFrame(() => {
+                            // Cleared before handling the scroll, so that an exception can't stop all further updates.
+                            o.queuedAnimationFrame = 0;
                             this.handleScroll(o);
-                            o.queuedForAnimationFrame = false;
                         });
                     }
                 } else {

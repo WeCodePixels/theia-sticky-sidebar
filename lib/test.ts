@@ -1,8 +1,6 @@
-import {getOffset, TheiaStickySidebar} from "./theia-sticky-sidebar.ts";
+import {getOffset} from "./theia-sticky-sidebar.ts";
 
-export function testTheiaStickySidebars(tss: TheiaStickySidebar) {
-    tss.options.requestAnimationFrame = false;
-
+export function testTheiaStickySidebars() {
     const me: {
         scrollTopStep: number,
         currentScrollTop: number,

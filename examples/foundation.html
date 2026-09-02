@@ -7,18 +7,18 @@
             import {TheiaStickySidebar} from '/lib/theia-sticky-sidebar.ts';
             import {testTheiaStickySidebars} from '/lib/test.ts';
 
-            let tss;
-
             document.addEventListener('DOMContentLoaded', function () {
-                tss = new TheiaStickySidebar({
+                new TheiaStickySidebar({
                     elements: 'section .columns',
-                    additionalMarginTop: 30
+                    additionalMarginTop: 30,
+                    // Disabled so that the test below can measure sidebar offsets synchronously after each scroll.
+                    enableRequestAnimationFrame: false
                 });
             });
 
             document.querySelector('#start_test').addEventListener('click', element => {
                 element.disabled = true;
-                testTheiaStickySidebars(tss);
+                testTheiaStickySidebars();
             });
         </script>
         <style>
