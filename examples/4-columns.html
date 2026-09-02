@@ -9,7 +9,9 @@
         document.addEventListener('DOMContentLoaded', function () {
             new TheiaStickySidebar({
                 elements: '.column',
-                additionalMarginTop: 30
+                additionalMarginTop: 30,
+                // Disabled so that the test below can measure sidebar offsets synchronously after each scroll.
+                enableRequestAnimationFrame: false
             });
         });
 
